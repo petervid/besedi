@@ -342,6 +342,11 @@ main:focus{outline:none}
 .brand:hover{color:var(--deep)}
 nav a:focus-visible,.backbtn:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @media (pointer:coarse){nav a{min-height:40px;display:inline-flex;align-items:center}.chip{padding:6px 12px}.qa button{padding:7px 13px}.backbtn{min-height:40px}.examples button{min-height:40px}}
+
+/* ---------- Paneurhythmy ---------- */
+.video{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#0d1828;border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));box-shadow:0 14px 44px -20px color-mix(in srgb,var(--deep) 45%,transparent);margin-top:10px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#pan-kurs .acts{margin-top:12px}
 </style>
 
 </head>
@@ -350,7 +355,7 @@ nav a:focus-visible,.backbtn:focus-visible,.btn:focus-visible{outline:2px solid 
 <header class="top"><div class="wrap">
   <a class="brand" href="#tarsene"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--gold)" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="var(--deep)" stroke-width="1.6" stroke-linejoin="round"/></svg>Беседите на Учителя</a>
   <button id="back" class="backbtn" type="button" hidden aria-label="Назад">← Назад</button>
-  <nav id="nav"><a href="#tarsene" data-v="tarsene">Търсене</a><a href="#balgaria" data-v="balgaria">България</a><a href="#temi" data-v="temi">Теми</a><a href="#hronologia" data-v="hronologia">Хронология</a><a href="#stihove" data-v="stihove">Библейски стихове</a><a href="#slovo" data-v="slovo">Словото</a><a href="#otkasi" data-v="otkasi">♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></a></nav>
+  <nav id="nav"><a href="#tarsene" data-v="tarsene">Търсене</a><a href="#balgaria" data-v="balgaria">България</a><a href="#temi" data-v="temi">Теми</a><a href="#hronologia" data-v="hronologia">Хронология</a><a href="#stihove" data-v="stihove">Библейски стихове</a><a href="#paneuritmia" data-v="paneuritmia">Паневритмия</a><a href="#slovo" data-v="slovo">Словото</a><a href="#otkasi" data-v="otkasi">♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></a></nav>
 </div></header>
 <div id="prog" aria-hidden="true"></div><div id="dawn" aria-hidden="true"></div>
 <div id="selbar" hidden><button type="button" id="sbsave">♡ Запази откъса</button><button type="button" id="sbshare">Сподели като картинка</button></div><div id="toast" hidden role="status"></div><div id="vtip" hidden></div><div class="modal" id="shr" hidden><div class="box"><img id="shimg" alt="Откъсът като картинка"><div class="acts"><button class="btn ghost" id="shgo" type="button">Сподели</button><a class="btn ghost" id="shdl" download="beseda-otkas.png">Изтегли</a><button class="btn ghost" id="shx" type="button">Затвори</button></div></div></div>
@@ -586,6 +591,8 @@ function trailOf(h){
   if(h==='#stihove') return [['#stihove','Библейски стихове']];
   if(h==='#otkasi') return [['#otkasi','Моите откъси']];
   if(h==='#slovo') return [['#slovo','Словото']];
+  if(h==='#paneuritmia') return [['#paneuritmia','Паневритмия']];
+  if(h.startsWith('#pan-')){const x=PAN&&PAN.parts.find(z=>'#pan-'+z.id===h);return [['#paneuritmia','Паневритмия'],[h,x?x.name:'Видео курс']]}
   if(h.startsWith('#b-')){const i=byNum.get(+(h.match(/^#b-(\d+)/)||[0,0])[1]);
     let o=null;for(let k=HIST.length-1;k>=0;k--){if(!HIST[k].startsWith('#b-')){o=HIST[k];break}}
     return [...(o?trailOf(o):[]),[h,i!=null?META[i][2]:'Беседа']]}
@@ -907,11 +914,12 @@ function navInView(){const a=document.querySelector('#nav a.on'),n=$('#nav');if(
 const SITE='Беседите на Учителя';
 function setTitle(){
   const h=location.hash.slice(1)||'tarsene';let t='';
-  const N={balgaria:'България и българите в новото време',temi:'Теми',hronologia:'Хронология',stihove:'Библейски стихове',slovo:'Словото в числа',otkasi:'Моите откъси'};
+  const N={paneuritmia:'Паневритмия',balgaria:'България и българите в новото време',temi:'Теми',hronologia:'Хронология',stihove:'Библейски стихове',slovo:'Словото в числа',otkasi:'Моите откъси'};
   if(h==='tarsene')t=S.q?`„${S.q}“ · Търсене`:'';
   else if(N[h])t=N[h];
   else if(h.startsWith('tema-')){const x=THEMES&&THEMES.find(z=>z.id===h.slice(5));t=x?x.name+' · Теми':''}
   else if(h.startsWith('bg-')){const x=BG&&BG.sections.find(z=>z.id===h.slice(3));t=x?x.name:''}
+  else if(h.startsWith('pan-')){const x=PAN&&PAN.parts.find(z=>z.id===h.slice(4));t=(x?x.name:'Видео курс')+' · Паневритмия'}
   else if(h.startsWith('b-')){const i=byNum.get(+(h.match(/^b-(\d+)/)||[0,0])[1]);t=i!=null?META[i][2]:''}
   document.title=t?`${t} · ${SITE}`:`${SITE}: 3877 беседи на Петър Дънов`;
 }
@@ -926,17 +934,38 @@ document.querySelector('.brand').addEventListener('click',e=>{
 {const tt=$('#totop');addEventListener('scroll',()=>{tt.hidden=window.scrollY<innerHeight*1.6},{passive:true});tt.onclick=()=>{window.scrollTo({top:0,behavior:RM.matches?'auto':'smooth'});app.focus({preventScroll:true})}}
 /* "/" focuses the search box */
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement.tagName)){const q=$('#q');if(q){e.preventDefault();q.focus()}else{e.preventDefault();location.hash='tarsene';setTimeout(()=>{const q=$('#q');if(q)q.focus()},60)}}});
+/* ---------- Paneurhythmy ---------- */
+let PAN=null;
+async function renderPan(){
+  if(!PAN)PAN=await getJSON('pan.json');
+  const C=PAN.course;
+  const q=(i,p,t)=>{const m=META[i];return `<div class="quote" data-i="${i}" data-p="${p}">${t.split(/\n+/).map(x=>`<p>${esc(x)}</p>`).join('')}<div class="src"><a href="#b-${m[0]}-p${p}">${esc(m[2])}</a> · ${esc(fmtDate(m[1]))}${m[5]?' · '+esc(m[5]):''}</div><div class="qa"><button type="button" data-act="fav">♡ Запази</button><button type="button" data-act="share">Сподели</button></div></div>`};
+  app.innerHTML=`<section class="hero panhero"><div class="hero-in"><div class="hero-txt"><p class="eyebrow">Музика · Движение · Слово</p><h1>Паневритмия</h1>
+  <p class="lede">Паневритмията е система от упражнения с музика, движение и слово, дадена от Учителя. Играе се сутрин, на открито, в кръг, от пролетта до есента. Има три части: 28 упражнения, „Слънчеви лъчи“ и „Пентаграм“. Тук е видео курсът на д-р Светла Балтова и подбрани думи на Учителя за същността на упражненията.</p>
+  <div class="toc"><a href="#pan-kurs"><span class="num">▶</span>Видео курс</a>${PAN.parts.map((x,k)=>`<a href="#pan-${x.id}"><span class="num">${k+1}</span>${esc(x.name)}</a>`).join('')}</div></div><div class="hero-emb">${pent(true)}</div></div></section>
+  <section class="bgsec" id="pan-kurs"><p class="eyebrow">${esc(C.sub)} · ${C.count} видеа</p><h2>${esc(C.title)}</h2>
+   <p class="summary">Курсът е подреден като плейлист. Бутонът ☰ в горния десен ъгъл на плейъра показва всички уроци, а след всеки урок следващият започва сам.</p>
+   <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(C.playlist)}&rel=0&modestbranding=1" title="${esc(C.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+   <div class="acts"><a class="btn ghost" href="https://www.youtube.com/playlist?list=${encodeURIComponent(C.playlist)}" target="_blank" rel="noopener">Целият плейлист в YouTube ↗</a></div>
+   <p class="note">Видео курс: ${esc(C.author)}.</p></section>
+  ${PAN.parts.map((x,k)=>`<section class="bgsec" id="pan-${x.id}"><p class="eyebrow num">Част ${k+1} от ${PAN.parts.length}</p><h2>${esc(x.name)}</h2><p class="summary"><span>Обобщение</span>${esc(x.intro)}</p>${x.items.map(([i,p,t])=>q(i,p,t)).join('')}</section>`).join('')}
+  <section class="bgsec"><h2>Бележките от 1939 година</h2><p class="summary">Думата „Паневритмия“ се среща в беседите само в бележки от пролетта и лятото на 1939 г., когато упражненията се играят преди беседите. Самите упражнения и обясненията към тях са в отделната книга „Паневритмия“.</p>
+   <ul class="list">${PAN.notes.map(([i,p,t])=>`<li><span class="d">${esc(fmtDate(META[i][1]))}</span><a href="#b-${META[i][0]}-p${p}">${esc(META[i][2])}</a> <span class="d">· ${esc(t)}</span></li>`).join('')}</ul></section>`;
+}
+
 /* ---------- router ---------- */
 async function route(){
   {const o=$('#hitnav'); if(o) o.remove();}
   const h=location.hash.slice(1)||'tarsene';
-  const v=h.startsWith('bg-')?'balgaria':h.startsWith('tema-')?'temi':h.startsWith('b-')?'':h;
+  const v=h.startsWith('pan-')?'paneuritmia':h.startsWith('bg-')?'balgaria':h.startsWith('tema-')?'temi':h.startsWith('b-')?'':h;
   document.querySelectorAll('#nav a').forEach(a=>{const on=a.dataset.v===v;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});navInView();
   if(h==='tarsene'){renderSearch();if(S.theme&&!S.res&&$('#th'))$('#th').value=S.theme;return}
   if(h==='balgaria'){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();window.scrollTo(0,0);return}
   if(h.startsWith('bg-')){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();const e=document.getElementById(h);if(e)e.scrollIntoView();return}
   if(h==='otkasi')return renderFavs();
   if(h==='slovo')return renderSlovo();
+  if(h==='paneuritmia'){await renderPan();window.scrollTo(0,0);return}
+  if(h.startsWith('pan-')){await renderPan();const e=document.getElementById(h);if(e)e.scrollIntoView();return}
   if(h==='temi')return renderThemes();
   if(h.startsWith('tema-'))return renderTheme(h.slice(5));
   if(h==='hronologia')return renderChron();
