@@ -572,7 +572,7 @@ function spark(years,cls,axis){
   return `<div class="sparkw"><svg class="spark ${cls||''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Разпределение по години">${ys.map((y,k)=>{const v=years[y]||0,h=v?Math.max(1.5,v/max*H):0;return `<rect x="${k*bw+.6}" y="${H-h}" width="${bw-1.2}" height="${h}"><title>${y}: ${v}</title></rect>`}).join('')}</svg>${ax}</div>`
 }
 function renderThemes(){
-  app.innerHTML=pagehead(`<p class="eyebrow">25 теми</p><h1>Главните теми в учението</h1>
+  app.innerHTML=pagehead(`<p class="eyebrow">${THEMES.length} теми</p><h1>Главните теми в учението</h1>
   <p class="lede">Темите са определени чрез анализ на всички 3877 текста (18 млн. думи): за всяка тема е преброено колко често се срещат ключовите ѝ понятия във всяка беседа. Беседа влиза в темата, когато я застъпва поне два пъти по-силно от средното.</p>`)+`
   <div class="tgrid">${THEMES.map(t=>`<a class="tcard" href="#tema-${t.id}"><h3>${esc(t.name)}</h3><p>${esc(t.desc)}</p>${spark(t.years)}<span class="n num">${t.count} беседи</span></a>`).join('')}</div>`;
 }
