@@ -60,7 +60,8 @@ def head(title, desc, canon, extra=''):
 <html lang="bg"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{canon}">
 <meta property="og:type" content="article"><meta property="og:site_name" content="Беседите на Учителя"><meta property="og:title" content="{esc(title)}">
-<meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{BASE}og.jpg"><meta property="og:locale" content="bg_BG"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{BASE}og.jpg?v=2"><meta property="og:locale" content="bg_BG"><meta property="og:image:alt" content="Беседите на Учителя"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><meta name="theme-color" content="#f2f6fb">
 {FONTS}<style>{CSS}</style>{extra}</head><body>'''
 
 def describe(text):

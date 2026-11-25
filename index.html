@@ -12,10 +12,21 @@
 <meta property="og:title" content="Беседите на Учителя: 3877 беседи на Петър Дънов">
 <meta property="og:description" content="Търсене във всички беседи на Беинса Дуно, теми, мисъл за деня и любими откъси.">
 <meta property="og:url" content="https://petervid.github.io/besedi/">
-<meta property="og:image" content="https://petervid.github.io/besedi/og.jpg">
+<meta property="og:image" content="https://petervid.github.io/besedi/og.jpg?v=2">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:locale" content="bg_BG">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="Беседите на Учителя: пентаграм на небесен фон и надпис „Всички 3877 беседи на Петър Дънов“">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Беседите на Учителя: 3877 беседи на Петър Дънов">
+<meta name="twitter:description" content="Търсене във всички беседи на Беинса Дуно, теми, мисъл за деня и любими откъси.">
+<meta name="twitter:image" content="https://petervid.github.io/besedi/og.jpg?v=2">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#f2f6fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1828" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
@@ -321,10 +332,21 @@ nav a{white-space:nowrap;flex:none}
  nav::-webkit-scrollbar{display:none}
  nav a{font-size:13.5px;padding:6px 10px}
 }
+
+/* ---------- UX polish ---------- */
+.skip{position:fixed;left:12px;top:-60px;z-index:40;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;transition:top .2s}
+.skip:focus{top:calc(10px + env(safe-area-inset-top,0px))}
+main:focus{outline:none}
+.totop{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;width:44px;height:44px;border-radius:50%;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));background:var(--surface);color:var(--deep);font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px color-mix(in srgb,var(--deep) 18%,transparent)}
+.totop[hidden]{display:none}.totop:hover{border-color:var(--gold);color:var(--ink)}
+.brand:hover{color:var(--deep)}
+nav a:focus-visible,.backbtn:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (pointer:coarse){nav a{min-height:40px;display:inline-flex;align-items:center}.chip{padding:6px 12px}.qa button{padding:7px 13px}.backbtn{min-height:40px}.examples button{min-height:40px}}
 </style>
 
 </head>
 <body>
+<a class="skip" href="#app">Към съдържанието</a>
 <header class="top"><div class="wrap">
   <a class="brand" href="#tarsene"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--gold)" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="var(--deep)" stroke-width="1.6" stroke-linejoin="round"/></svg>Беседите на Учителя</a>
   <button id="back" class="backbtn" type="button" hidden aria-label="Назад">← Назад</button>
@@ -332,7 +354,8 @@ nav a{white-space:nowrap;flex:none}
 </div></header>
 <div id="prog" aria-hidden="true"></div><div id="dawn" aria-hidden="true"></div>
 <div id="selbar" hidden><button type="button" id="sbsave">♡ Запази откъса</button><button type="button" id="sbshare">Сподели като картинка</button></div><div id="toast" hidden role="status"></div><div id="vtip" hidden></div><div class="modal" id="shr" hidden><div class="box"><img id="shimg" alt="Откъсът като картинка"><div class="acts"><button class="btn ghost" id="shgo" type="button">Сподели</button><a class="btn ghost" id="shdl" download="beseda-otkas.png">Изтегли</a><button class="btn ghost" id="shx" type="button">Затвори</button></div></div></div>
-<main class="wrap" id="app" lang="bg"><div class="loading">Зареждане на каталога…</div></main>
+<button type="button" id="totop" class="totop" hidden aria-label="Към началото на страницата">↑</button>
+<main class="wrap" id="app" lang="bg" tabindex="-1"><div class="loading">Зареждане на каталога…</div></main>
 <div class="wrap foot"><div class="v">Любов · Мъдрост · Истина · Правда · Добродетел</div>3877 беседи на Петър Дънов (Беинса Дуно), 1895–1944. Текстовете са взети от beinsa.org; всяка беседа има връзка към оригинала.<br><a href="b/">Списък на всички беседи</a></div>
 
 <script>
@@ -482,7 +505,7 @@ function renderSearch(keepForm){
   pg.forEach(async i=>{try{const t=await docText(i);const e=$('#sn'+i);if(e){e.innerHTML=snippet(t,i)+'<span class="go">Отвори на това място →</span>';const pk=paraOf(t,S.pos.get(i));const hr=`#b-${META[i][0]}-p${pk}`;e.setAttribute('href',hr);const tl=document.querySelector(`a.t[data-i="${i}"]`);if(tl)tl.setAttribute('href',hr);const k=countHits(t);const mt=$('#mt'+i);mt.textContent=[META[i][5],k+' съвпадения'].filter(Boolean).join(' · ')}}catch(e){}});
 }
 function readForm(){S.q=$('#q').value.trim();S.theme=$('#th').value;S.from=$('#yf').value.trim();S.to=$('#yt').value.trim();S.sort=$('#so').value}
-function go(){S.page=0;runSearch()}
+function go(){S.page=0;runSearch();setTitle()}
 
 /* ---------- themes ---------- */
 function spark(years,cls,axis){
@@ -879,12 +902,36 @@ async function renderSlovo(){
 {const hd=document.querySelector('header.top');const fit=()=>document.documentElement.style.setProperty('--hh',hd.offsetHeight+'px');fit();
  if('ResizeObserver' in window)new ResizeObserver(fit).observe(hd);else addEventListener('resize',fit);}
 function navInView(){const a=document.querySelector('#nav a.on'),n=$('#nav');if(a&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:RM.matches?'auto':'smooth'})}
+
+/* page titles in the browser tab */
+const SITE='Беседите на Учителя';
+function setTitle(){
+  const h=location.hash.slice(1)||'tarsene';let t='';
+  const N={balgaria:'България и българите в новото време',temi:'Теми',hronologia:'Хронология',stihove:'Библейски стихове',slovo:'Словото в числа',otkasi:'Моите откъси'};
+  if(h==='tarsene')t=S.q?`„${S.q}“ · Търсене`:'';
+  else if(N[h])t=N[h];
+  else if(h.startsWith('tema-')){const x=THEMES&&THEMES.find(z=>z.id===h.slice(5));t=x?x.name+' · Теми':''}
+  else if(h.startsWith('bg-')){const x=BG&&BG.sections.find(z=>z.id===h.slice(3));t=x?x.name:''}
+  else if(h.startsWith('b-')){const i=byNum.get(+(h.match(/^b-(\d+)/)||[0,0])[1]);t=i!=null?META[i][2]:''}
+  document.title=t?`${t} · ${SITE}`:`${SITE}: 3877 беседи на Петър Дънов`;
+}
+const isHome=h=>!h||h==='#'||h==='#tarsene';
+function syncBack(){$('#back').hidden=!HIST.length||isHome(cur)}
+function resetHome(){S.q='';S.res=null;S.theme='';S.from='';S.to='';S.page=0;S.rx=null;HIST=[];DAILY.shift=0;syncBack()}
+document.querySelector('.brand').addEventListener('click',e=>{
+  resetHome();
+  if(isHome(location.hash)){e.preventDefault();renderSearch();setTitle();window.scrollTo({top:0,behavior:RM.matches?'auto':'smooth'})}
+});
+/* back to top */
+{const tt=$('#totop');addEventListener('scroll',()=>{tt.hidden=window.scrollY<innerHeight*1.6},{passive:true});tt.onclick=()=>{window.scrollTo({top:0,behavior:RM.matches?'auto':'smooth'});app.focus({preventScroll:true})}}
+/* "/" focuses the search box */
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement.tagName)){const q=$('#q');if(q){e.preventDefault();q.focus()}else{e.preventDefault();location.hash='tarsene';setTimeout(()=>{const q=$('#q');if(q)q.focus()},60)}}});
 /* ---------- router ---------- */
 async function route(){
   {const o=$('#hitnav'); if(o) o.remove();}
   const h=location.hash.slice(1)||'tarsene';
   const v=h.startsWith('bg-')?'balgaria':h.startsWith('tema-')?'temi':h.startsWith('b-')?'':h;
-  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));navInView();
+  document.querySelectorAll('#nav a').forEach(a=>{const on=a.dataset.v===v;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});navInView();
   if(h==='tarsene'){renderSearch();if(S.theme&&!S.res&&$('#th'))$('#th').value=S.theme;return}
   if(h==='balgaria'){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();window.scrollTo(0,0);return}
   if(h.startsWith('bg-')){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();const e=document.getElementById(h);if(e)e.scrollIntoView();return}
@@ -909,14 +956,15 @@ async function route(){
     const back=goingBack;goingBack=false;
     if(!back&&location.hash!==cur)HIST.push(cur);
     cur=location.hash||'#tarsene';
-    bb.hidden=!HIST.length;
+    syncBack();
     await route();
+    setTitle();
     enterAnim();
     const c=crumbs(); if(c) app.insertAdjacentHTML('afterbegin',c);
     if(back&&SCROLL[cur]!=null){const y=SCROLL[cur];setTimeout(()=>window.scrollTo(0,y),60)}
   });
   bb.onclick=()=>{if(!HIST.length){location.hash='tarsene';return}goingBack=true;location.hash=HIST.pop()};
-  route().then(()=>{const c=crumbs();if(c)app.insertAdjacentHTML('afterbegin',c)});
+  route().then(()=>{setTitle();syncBack();const c=crumbs();if(c)app.insertAdjacentHTML('afterbegin',c)});
 })();
 </script>
 </body>
