@@ -44,7 +44,7 @@ a{color:var(--deep)}
 button,input,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .wrap{max-width:920px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,var(--line))}
+header.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:15;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,var(--line))}
 header.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;padding-block:10px}
 .brand{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:.01em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:10px}
 .brand svg{flex:none}
@@ -261,6 +261,66 @@ nav a .cnt[hidden]{display:none}
 .modal .acts{margin:0;justify-content:center}
 .favs .quote .src{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
 .empty{padding:28px 0;color:var(--muted);max-width:56ch}
+
+/* ---------- the Word: statistics ---------- */
+:root{--s1:#257de0;--s2:#f47230;--s3:#00b894}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#338ced;--s2:#e76624;--s3:#00a888}}
+:root[data-theme="dark"]{--s1:#338ced;--s2:#e76624;--s3:#00a888}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0 4px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px}
+.tile b{display:block;font-family:var(--display);font-weight:600;font-size:34px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums}
+.tile span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+.vsec{padding-top:30px}
+.vsec h3{font-size:20px;margin:6px 0 6px}
+.vz{display:block;width:100%;height:auto;overflow:visible}
+.vz .grid{stroke:var(--line);stroke-width:1}
+.vz .ax{fill:var(--muted);font:11px var(--ui)}
+.vz .lab{fill:var(--ink);font:600 12.5px var(--ui)}
+.vz .bar{fill:var(--gold)}
+.vz .hit{fill:transparent;cursor:crosshair}.vz .hit:hover{fill:color-mix(in srgb,var(--gold) 14%,transparent)}
+.vz .xh{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.vz .ov{fill:transparent;cursor:crosshair}
+#vtip{position:fixed;z-index:30;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.14);max-width:260px}
+#vtip[hidden]{display:none}
+#vtip i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.cloud{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:4px 14px;padding:22px 18px;background:var(--surface);border:1px solid var(--line);border-radius:16px;line-height:1.15}
+.cloud button{border:0;background:none;padding:2px 2px;font-family:var(--display);font-weight:600;color:var(--ink);cursor:pointer}
+.cloud button:nth-child(3n+1){color:var(--deep)}.cloud button:nth-child(5n+2){color:var(--accent)}
+.cloud button:hover{text-decoration:underline;text-decoration-color:var(--gold)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:6px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px}
+.pcard h3{font-size:26px;margin:0}.pcard p{margin:4px 0 0;color:var(--muted);font-size:13.5px}.pcard .pm{color:var(--accent);font-weight:600;font-size:12.5px}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.kw button,.cbtn{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:4px 11px;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.kw button span{color:var(--muted);font-size:11.5px}
+.kw button:hover,.cbtn:hover{border-color:var(--gold)}
+.cbtn{background:var(--surface);box-shadow:inset 3px 0 0 var(--sc,transparent)}
+.cbtn.on{border-color:var(--ink);font-weight:600}
+.mw{display:flex;gap:8px;margin-top:12px;max-width:420px}
+.mw input{flex:1;min-width:0;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.mwst{font-size:13.5px;color:var(--muted);min-height:1.4em;margin:8px 0 4px}
+.note{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.phr{margin:0;padding-left:1.4em;font-size:14.5px}.phr li{padding:3px 0}.phr a{color:var(--ink);text-decoration:none}.phr a:hover{color:var(--deep);text-decoration:underline}.phr span{color:var(--muted);font-size:12.5px}
+.ftab{margin-top:8px;border-top:1px solid var(--line);overflow-x:auto}
+.fr{display:grid;grid-template-columns:minmax(200px,2.4fr) 70px repeat(5,minmax(58px,1fr));gap:4px;align-items:center;border-bottom:1px solid var(--line);padding:6px 0;min-width:640px}
+.fh{font-size:12px;color:var(--muted);font-weight:600}
+.fr a{color:var(--ink);text-decoration:none;font-family:var(--read)}.fr a:hover{color:var(--deep)}
+.fc{text-align:center;font-size:12.5px;border-radius:6px;padding:5px 0;background:color-mix(in srgb,var(--gold) calc(var(--a)*70%),transparent);font-variant-numeric:tabular-nums}
+@media (max-width:640px){.two,.three{grid-template-columns:1fr}.tile b{font-size:28px}}
+
+/* always-visible top bar: fixed, the page is pushed down by its measured height */
+body{padding-top:var(--hh,108px)}
+.crumbs,.bgsec,.text p.hit{scroll-margin-top:calc(var(--hh,108px) + 16px)}
+nav a{white-space:nowrap;flex:none}
+@media (max-width:640px){
+ header.top .wrap{gap:4px 10px;padding-block:8px 6px}
+ .brand{font-size:20px}
+ nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex:1 0 100%;min-width:0;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 26px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 26px),transparent 100%)}
+ nav::-webkit-scrollbar{display:none}
+ nav a{font-size:13.5px;padding:6px 10px}
+}
 </style>
 
 </head>
@@ -268,10 +328,10 @@ nav a .cnt[hidden]{display:none}
 <header class="top"><div class="wrap">
   <a class="brand" href="#tarsene"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--gold)" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="var(--deep)" stroke-width="1.6" stroke-linejoin="round"/></svg>Беседите на Учителя</a>
   <button id="back" class="backbtn" type="button" hidden aria-label="Назад">← Назад</button>
-  <nav id="nav"><a href="#tarsene" data-v="tarsene">Търсене</a><a href="#balgaria" data-v="balgaria">България</a><a href="#temi" data-v="temi">Теми</a><a href="#hronologia" data-v="hronologia">Хронология</a><a href="#stihove" data-v="stihove">Библейски стихове</a><a href="#otkasi" data-v="otkasi">♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></a></nav>
+  <nav id="nav"><a href="#tarsene" data-v="tarsene">Търсене</a><a href="#balgaria" data-v="balgaria">България</a><a href="#temi" data-v="temi">Теми</a><a href="#hronologia" data-v="hronologia">Хронология</a><a href="#stihove" data-v="stihove">Библейски стихове</a><a href="#slovo" data-v="slovo">Словото</a><a href="#otkasi" data-v="otkasi">♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></a></nav>
 </div></header>
 <div id="prog" aria-hidden="true"></div><div id="dawn" aria-hidden="true"></div>
-<div id="selbar" hidden><button type="button" id="sbsave">♡ Запази откъса</button><button type="button" id="sbshare">Сподели като картинка</button></div><div id="toast" hidden role="status"></div><div class="modal" id="shr" hidden><div class="box"><img id="shimg" alt="Откъсът като картинка"><div class="acts"><button class="btn ghost" id="shgo" type="button">Сподели</button><a class="btn ghost" id="shdl" download="beseda-otkas.png">Изтегли</a><button class="btn ghost" id="shx" type="button">Затвори</button></div></div></div>
+<div id="selbar" hidden><button type="button" id="sbsave">♡ Запази откъса</button><button type="button" id="sbshare">Сподели като картинка</button></div><div id="toast" hidden role="status"></div><div id="vtip" hidden></div><div class="modal" id="shr" hidden><div class="box"><img id="shimg" alt="Откъсът като картинка"><div class="acts"><button class="btn ghost" id="shgo" type="button">Сподели</button><a class="btn ghost" id="shdl" download="beseda-otkas.png">Изтегли</a><button class="btn ghost" id="shx" type="button">Затвори</button></div></div></div>
 <main class="wrap" id="app" lang="bg"><div class="loading">Зареждане на каталога…</div></main>
 <div class="wrap foot"><div class="v">Любов · Мъдрост · Истина · Правда · Добродетел</div>3877 беседи на Петър Дънов (Беинса Дуно), 1895–1944. Текстовете са взети от beinsa.org; всяка беседа има връзка към оригинала.<br><a href="b/">Списък на всички беседи</a></div>
 
@@ -502,6 +562,7 @@ function trailOf(h){
   if(h==='#hronologia') return [['#hronologia','Хронология']];
   if(h==='#stihove') return [['#stihove','Библейски стихове']];
   if(h==='#otkasi') return [['#otkasi','Моите откъси']];
+  if(h==='#slovo') return [['#slovo','Словото']];
   if(h.startsWith('#b-')){const i=byNum.get(+(h.match(/^#b-(\d+)/)||[0,0])[1]);
     let o=null;for(let k=HIST.length-1;k>=0;k--){if(!HIST[k].startsWith('#b-')){o=HIST[k];break}}
     return [...(o?trailOf(o):[]),[h,i!=null?META[i][2]:'Беседа']]}
@@ -711,16 +772,124 @@ $('#shr').addEventListener('click',e=>{if(e.target.id==='shr')$('#shr').hidden=t
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#shr').hidden=true});
 document.documentElement.lang=document.documentElement.lang||'bg';
 
+/* ---------- the Word: statistics ---------- */
+let SL=null;
+const fmtN=n=>Math.round(n).toLocaleString('bg');
+const SER=['var(--s1)','var(--s2)','var(--s3)'];
+function vtip(html,ev){const t=$('#vtip');if(!html){t.hidden=true;return}t.innerHTML=html;t.hidden=false;const r=t.getBoundingClientRect();let x=ev.clientX+14,y=ev.clientY+14;if(x+r.width>innerWidth-8)x=ev.clientX-r.width-14;if(y+r.height>innerHeight-8)y=ev.clientY-r.height-14;t.style.left=x+'px';t.style.top=y+'px'}
+function smooth(ys,vals,wts){return ys.map((y,k)=>{let s=0,w=0;for(let d=-1;d<=1;d++){const j=k+d;if(j<0||j>=ys.length)continue;const ww=(wts[ys[j]]||0)*(d?0.5:1);s+=(vals[ys[j]]||0)*ww;w+=ww}return w?s/w:0})}
+function barChart(ys,vals,fmt,label,W=720){
+  const H=W<500?190:170,pl=44,pr=8,pt=10,pb=24,max=Math.max(...ys.map(y=>vals[y]||0)),bw=(W-pl-pr)/ys.length;
+  const nice=v=>{const p=Math.pow(10,Math.floor(Math.log10(v)));return Math.ceil(v/p)*p};const top=nice(max);
+  const Y=v=>pt+(H-pt-pb)*(1-v/top);
+  let g='';[0,.5,1].forEach(f=>{const v=top*f;g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${pl-6}" y="${Y(v)+4}" class="ax" text-anchor="end">${fmt(v,true)}</text>`});
+  ys.forEach((y,k)=>{const v=vals[y]||0,h=H-pb-Y(v);if(h>0)g+=`<path d="M${pl+k*bw+1},${H-pb} v${-Math.max(0,h-2)} q0,-2 2,-2 h${Math.max(1,bw-6)} q2,0 2,2 v${Math.max(0,h-2)} z" class="bar"/>`;
+    g+=`<rect x="${pl+k*bw}" y="${pt}" width="${bw}" height="${H-pt-pb}" class="hit" data-y="${y}"/>`;
+    if(y%5===0)g+=`<text x="${pl+k*bw+bw/2}" y="${H-6}" class="ax" text-anchor="middle">${y}</text>`});
+  const id='bc'+Math.random().toString(36).slice(2,7);
+  setTimeout(()=>{const s=document.getElementById(id);if(!s)return;s.querySelectorAll('.hit').forEach(r=>{r.onmousemove=e=>vtip(`<b>${r.dataset.y}</b><br>${label}: ${fmt(vals[r.dataset.y]||0)}`,e);r.onmouseleave=()=>vtip()})});
+  return `<svg id="${id}" class="vz" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)} по години">${g}</svg>`;
+}
+function lineChart(ys,series,unit){
+  const W=720,H=260,pl=44,pr=96,pt=14,pb=26;const all=series.flatMap(s=>s.v);const top=Math.max(1e-9,...all)*1.08;
+  const X=k=>pl+(W-pl-pr)*k/(ys.length-1),Y=v=>pt+(H-pt-pb)*(1-v/top);
+  let g='';[0,.25,.5,.75,1].forEach(f=>{const v=top*f;g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${pl-6}" y="${Y(v)+4}" class="ax" text-anchor="end">${v<10?v.toFixed(1):Math.round(v)}</text>`});
+  ys.forEach((y,k)=>{if(y%5===0)g+=`<text x="${X(k)}" y="${H-7}" class="ax" text-anchor="middle">${y}</text>`});
+  const ends=series.map((s,j)=>({j,y:Y(s.v[s.v.length-1])})).sort((a,b)=>a.y-b.y);for(let k=1;k<ends.length;k++)if(ends[k].y-ends[k-1].y<15)ends[k].y=ends[k-1].y+15;
+  series.forEach((s,j)=>{g+=`<path d="${s.v.map((v,k)=>(k?'L':'M')+X(k).toFixed(1)+','+Y(v).toFixed(1)).join('')}" fill="none" stroke="${s.c}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    const e=ends.find(x=>x.j===j);g+=`<circle cx="${X(ys.length-1)}" cy="${Y(s.v[s.v.length-1])}" r="4" fill="${s.c}" stroke="var(--surface)" stroke-width="2"/><text x="${X(ys.length-1)+9}" y="${e.y+4}" class="lab">${esc(s.n)}</text>`});
+  g+=`<line class="xh" x1="0" x2="0" y1="${pt}" y2="${H-pb}" visibility="hidden"/><rect class="ov" x="${pl}" y="${pt}" width="${W-pl-pr}" height="${H-pt-pb}"/>`;
+  const id='lc'+Math.random().toString(36).slice(2,7);
+  setTimeout(()=>{const s=document.getElementById(id);if(!s)return;const ov=s.querySelector('.ov'),xh=s.querySelector('.xh');
+    ov.onmousemove=e=>{const r=s.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;const k=Math.max(0,Math.min(ys.length-1,Math.round((px-pl)/(W-pl-pr)*(ys.length-1))));xh.setAttribute('x1',X(k));xh.setAttribute('x2',X(k));xh.setAttribute('visibility','visible');
+      vtip(`<b>${ys[k]}</b>`+series.map(z=>`<div><i style="background:${z.c}"></i>${esc(z.n)}: ${z.v[k].toFixed(1)} ${unit}</div>`).join(''),e)};
+    ov.onmouseleave=()=>{xh.setAttribute('visibility','hidden');vtip()}});
+  return `<svg id="${id}" class="vz" viewBox="0 0 ${W} ${H}" role="img" aria-label="Честота по години">${g}</svg>`;
+}
+const LY=[];for(let y=1914;y<=1944;y++)LY.push(y);
+let PICK=['Любов','Мъдрост','Истина'],SLOT={'Любов':0,'Мъдрост':1,'Истина':2},MYW=null;
+function yearWords(){const o={};for(const y in SL.years)o[y]=SL.years[y][1];return o}
+function conceptSeries(){const wy=yearWords();return PICK.map(n=>{const v={};for(const y in SL.years)v[y]=SL.years[y][4][n];return {n,c:SER[SLOT[n]],v:smooth(LY,v,wy)}})}
+function drawConcepts(){
+  const box=$('#cchart');if(!box)return;
+  const ser=MYW?[...conceptSeries().slice(0,2),{n:'„'+MYW.w+'“',c:SER[MYW.slot],v:MYW.v}]:conceptSeries();
+  box.innerHTML=lineChart(LY,ser,'на 10 000 думи');
+  document.querySelectorAll('#cpick button').forEach(b=>{const on=PICK.includes(b.dataset.c);b.classList.toggle('on',on);b.style.setProperty('--sc',on?SER[SLOT[b.dataset.c]]:'transparent')});
+}
+async function myWord(q){
+  const w=(norm(q).match(/[а-я]{2,}/)||[])[0];if(!w){MYW=null;drawConcepts();return}
+  $('#mwst').textContent='Броя…';
+  const m=await postings(stem(w));const by={};m.forEach((tf,i)=>{const y=META[i][1].slice(0,4);by[y]=(by[y]||0)+tf});
+  const wy=yearWords(),v={};for(const y in wy)v[y]=(by[y]||0)/Math.max(1,wy[y])*10000;
+  const total=[...m.values()].reduce((a,b)=>a+b,0);
+  if(PICK.length>2){PICK=PICK.slice(0,2)}
+  const used=new Set(PICK.map(n=>SLOT[n]));MYW={w:q.trim(),v:smooth(LY,v,wy),slot:[0,1,2].find(s=>!used.has(s))};
+  $('#mwst').innerHTML=total?`„${esc(q.trim())}“ се среща ${fmtN(total)} пъти в ${fmtN(m.size)} беседи. <a href="#tarsene" id="mwgo">Виж беседите →</a>`:'Тази дума не се среща в беседите.';
+  const g=$('#mwgo');if(g)g.onclick=e=>{e.preventDefault();S.q=q.trim();S.theme='';location.hash='tarsene';setTimeout(()=>{$('#q').value=S.q;readForm();go()},0)};
+  drawConcepts();
+}
+function goSearch(w,from,to){S.q=w;S.theme='';S.from=from||'';S.to=to||'';location.hash='tarsene';setTimeout(()=>{$('#q').value=w;$('#yf').value=S.from;$('#yt').value=S.to;readForm();go()},0)}
+async function renderSlovo(){
+  if(!SL)SL=await getJSON('slovo.json');
+  const T=SL.total,ys=Object.keys(SL.years).map(Number).sort((a,b)=>a-b);const Ys=[];for(let y=ys[0];y<=ys[ys.length-1];y++)Ys.push(y);
+  const wv={},sv={},qv={};ys.forEach(y=>{const r=SL.years[y];wv[y]=r[1];sv[y]=r[2];qv[y]=r[3]});
+  const mx=SL.top[0][1],mn=SL.top[SL.top.length-1][1];
+  const pron=SL.pron.map((p,j)=>{const v={};ys.forEach(y=>v[y]=SL.years[y][5][p]);return {n:p,c:SER[j],v:smooth(LY,v,yearWords())}});
+  const per=SL.periods;
+  app.innerHTML=pagehead(`<p class="eyebrow">Анализ на текстовете</p><h1>Словото <em>в числа</em></h1><p class="lede">Колко е казано, кои думи се повтарят най-често и как се променя езикът на беседите през петте десетилетия. Старият правопис е уеднаквен с новия, а служебните думи („и“, „да“, „се“…) са изключени.</p>`)+`
+  <div class="tiles">
+   <div class="tile"><b>${(T.words/1e6).toFixed(1).replace('.',',')} млн.</b><span>думи общо</span></div>
+   <div class="tile"><b>${fmtN(T.docs)}</b><span>беседи, лекции и слова</span></div>
+   <div class="tile"><b>${fmtN(T.distinct)}</b><span>различни словоформи</span></div>
+   <div class="tile"><b>${fmtN(T.avg)}</b><span>думи средно в беседа</span></div>
+   <div class="tile"><b>≈ ${fmtN(T.pages)}</b><span>книжни страници (по 300 думи)</span></div>
+  </div>
+  <section class="vsec"><h2>Колко е говорено всяка година</h2><p class="summary">Брой думи във всички беседи от съответната година. Посочете стълб за точното число.</p>${barChart(Ys,wv,(v,a)=>a?(v>=1e6?(v/1e6).toFixed(1)+' млн':Math.round(v/1000)+' хил'):fmtN(v)+' думи','Думи')}</section>
+  <section class="vsec"><h2>Най-често употребяваните думи</h2><p class="summary">Стоте думи с най-голяма честота. Колкото по-голяма е думата, толкова по-често се среща. Натиснете дума, за да видите беседите.</p>
+   <div class="cloud">${SL.top.map(([w,c])=>{const f=Math.sqrt((c-mn)/(mx-mn));return `<button type="button" data-w="${esc(w)}" style="font-size:${(14+f*26).toFixed(1)}px;opacity:${(.6+f*.4).toFixed(2)}" title="${fmtN(c)} пъти">${esc(w)}</button>`}).join('')}</div></section>
+  <section class="vsec"><h2>Ключовите думи на всеки период</h2><p class="summary">Думите, които са характерни за даден период: срещат се в него много по-често, отколкото в останалите години. Числото показва колко пъти по-често.</p>
+   <div class="pgrid">${per.map(p=>{const [a,b]=p.name.split('–');return `<div class="pcard"><h3>${p.name}</h3><p>${esc(p.desc)}</p><p class="pm num">${fmtN(p.docs)} беседи · ${(p.words/1e6).toFixed(1).replace('.',',')} млн. думи</p><div class="kw">${p.top.slice(0,14).map(([w,r])=>`<button type="button" data-w="${esc(w)}" data-f="${a}" data-t="${b}">${esc(w)} <span>×${String(r).replace('.',',')}</span></button>`).join('')}</div></div>`}).join('')}</div></section>
+  <section class="vsec"><h2>Как се променя словото</h2><p class="summary">Колко често се срещат основните понятия във всяка година, на 10 000 думи, изгладено по три години. Изберете до три понятия или напишете своя дума.</p>
+   <div class="chips" id="cpick">${SL.concepts.map(c=>`<button type="button" class="cbtn" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+   <form class="mw" id="mwf"><input id="mwq" placeholder="Своя дума, напр. слънце" autocomplete="off" aria-label="Своя дума"><button class="btn ghost" type="submit">Покажи</button></form><p class="mwst" id="mwst"></p>
+   <div id="cchart"></div><p class="note">Преди 1914 г. беседите са малко и кривите там не са надеждни, затова графиката започва от 1914 г.</p></section>
+  <section class="vsec"><h2>Как говори Учителя</h2><p class="summary">Промени в начина на изказ през годините.</p>
+   <div class="two"><div><h3>Средна дължина на изречението</h3>${barChart(Ys.filter(y=>y>=1914),sv,(v,a)=>a?Math.round(v):v.toFixed(1)+' думи','Думи в изречение',360)}</div>
+   <div><h3>Въпроси на 1000 думи</h3>${barChart(Ys.filter(y=>y>=1914),qv,(v,a)=>a?Math.round(v):v.toFixed(1)+' въпроса','Въпроси',360)}</div></div>
+   <h3 style="margin-top:18px">„Аз“, „Ние“ и „Вие“ на 10 000 думи</h3>${lineChart(LY,pron,'на 10 000 думи')}</section>
+  <section class="vsec"><h2>Повтарящи се формули</h2><p class="summary">Изрази, които минават през цялото учение. Числото е броят беседи, в които се срещат, а клетките показват в какъв дял от беседите на всеки период присъстват.</p>
+   <div class="ftab" role="table"><div class="fr fh" role="row"><span role="columnheader">Израз</span><span role="columnheader" class="num">Беседи</span>${per.map(p=>`<span role="columnheader">${p.name}</span>`).join('')}</div>
+   ${SL.formulas.filter(f=>f[1]>=20).map(([n,c,pp])=>`<div class="fr" role="row"><span role="cell"><a href="#" data-w="&quot;${esc(n)}&quot;">${esc(n)}</a></span><span role="cell" class="num">${fmtN(c)}</span>${pp.map((v,k)=>{const pc=v/per[k].docs*100;return `<span role="cell" class="fc" style="--a:${Math.min(1,pc/40).toFixed(2)}" title="${per[k].name}: ${v} беседи">${pc<0.5?'·':pc.toFixed(0)+'%'}</span>`}).join('')}</div>`).join('')}</div></section>
+  <section class="vsec"><h2>Най-честите изрази</h2><p class="summary">Съчетания от думи, които се повтарят в най-много беседи.</p>
+   <div class="three">${[['2','От две думи'],['3','От три думи'],['4','От четири думи']].map(([k,h])=>`<div><h3>${h}</h3><ol class="phr">${SL.phrases[k].slice(0,12).map(([p,c])=>`<li><a href="#" data-w="&quot;${esc(p)}&quot;">${esc(p)}</a> <span class="num">${fmtN(c)}</span></li>`).join('')}</ol></div>`).join('')}</div></section>
+  <section class="vsec"><h2>Най-дългите беседи</h2><p class="summary">Без протоколите от годишните срещи на Веригата, които са най-дългите текстове изобщо.</p><ul class="list">${SL.longest.map(([i,w])=>`<li><span class="d">${fmtN(w)} думи</span><a href="#b-${META[i][0]}">${esc(META[i][2])}</a> <span class="d">· ${esc(fmtDate(META[i][1]))}</span></li>`).join('')}</ul></section>`;
+  app.querySelectorAll('.cloud [data-w],.kw [data-w],.ftab [data-w],.phr [data-w]').forEach(b=>b.onclick=e=>{e.preventDefault();goSearch(b.dataset.w,b.dataset.f,b.dataset.t)});
+  document.querySelectorAll('#cpick button').forEach(b=>b.onclick=()=>{const c=b.dataset.c;
+    if(PICK.includes(c)){if(PICK.length>1)PICK=PICK.filter(x=>x!==c)}else{const lim=MYW?2:3;if(PICK.length>=lim)PICK=PICK.slice(1);PICK.push(c)}
+    const used=new Set(PICK.filter(x=>x!==c&&SLOT[x]!=null).map(x=>SLOT[x]));if(MYW)used.add(MYW.slot);
+    if(PICK.includes(c)&&(SLOT[c]==null||used.has(SLOT[c])))SLOT[c]=[0,1,2].find(s=>!used.has(s));
+    drawConcepts()});
+  $('#mwf').onsubmit=e=>{e.preventDefault();myWord($('#mwq').value)};
+  if(MYW)$('#mwq').value=MYW.w;
+  drawConcepts();
+}
+
+
+/* keep the page below the fixed top bar, and keep the active menu item in view */
+{const hd=document.querySelector('header.top');const fit=()=>document.documentElement.style.setProperty('--hh',hd.offsetHeight+'px');fit();
+ if('ResizeObserver' in window)new ResizeObserver(fit).observe(hd);else addEventListener('resize',fit);}
+function navInView(){const a=document.querySelector('#nav a.on'),n=$('#nav');if(a&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:RM.matches?'auto':'smooth'})}
 /* ---------- router ---------- */
 async function route(){
   {const o=$('#hitnav'); if(o) o.remove();}
   const h=location.hash.slice(1)||'tarsene';
   const v=h.startsWith('bg-')?'balgaria':h.startsWith('tema-')?'temi':h.startsWith('b-')?'':h;
-  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));navInView();
   if(h==='tarsene'){renderSearch();if(S.theme&&!S.res&&$('#th'))$('#th').value=S.theme;return}
   if(h==='balgaria'){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();window.scrollTo(0,0);return}
   if(h.startsWith('bg-')){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();const e=document.getElementById(h);if(e)e.scrollIntoView();return}
   if(h==='otkasi')return renderFavs();
+  if(h==='slovo')return renderSlovo();
   if(h==='temi')return renderThemes();
   if(h.startsWith('tema-'))return renderTheme(h.slice(5));
   if(h==='hronologia')return renderChron();
