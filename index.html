@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="bg"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Беседите на Учителя</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Literata:opsz,wght@7..72,400;7..72,600&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a heavenly reading room after the Pentagram painting. Pale sky ground, dawn-rose and gold light, a sky panel with the five-virtue emblem opens each main view; reading column stays quiet. */
+:root{
+  --bg:#f2f6fb; --bg2:#fbf3ef; --surface:#ffffff; --ink:#1d2f4a; --muted:#596b82; --line:#d9e3ee;
+  --accent:#b07f22; --accent-soft:#f6ebd1; --deep:#2b6a9e; --mark:#fbe5a8;
+  --sky1:#b9dcf3; --sky2:#e9f2fa; --dawn:#f6d3c4; --gold:#d2a64a; --rose:#e7a9a3; --green:#7fb88a; --lav:#c9c3ec; --rayink:#1d2f4a;
+  --display:"Cormorant Garamond","Georgia",serif;
+  --read:"Literata","Georgia",serif;
+  --ui:"Manrope","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1828; --bg2:#1a1830; --surface:#14233a; --ink:#e8eef6; --muted:#9db0c6; --line:#24364f;
+  --accent:#e3bf6b; --accent-soft:#3a3120; --deep:#9fcdf0; --mark:#5b4716;
+  --sky1:#1c3a5e; --sky2:#13243c; --dawn:#4a2f45; --gold:#e3bf6b; --rose:#d68f8a; --green:#6fae7d; --lav:#9e97d6; --rayink:#0d1828; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1828; --bg2:#1a1830; --surface:#14233a; --ink:#e8eef6; --muted:#9db0c6; --line:#24364f;
+  --accent:#e3bf6b; --accent-soft:#3a3120; --deep:#9fcdf0; --mark:#5b4716;
+  --sky1:#1c3a5e; --sky2:#13243c; --dawn:#4a2f45; --gold:#e3bf6b; --rose:#d68f8a; --green:#6fae7d; --lav:#9e97d6; --rayink:#0d1828; color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{background:var(--bg);background-image:linear-gradient(180deg,var(--bg) 0%,var(--bg) 55%,var(--bg2) 100%);background-attachment:fixed;color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.55;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:var(--deep)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:920px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,var(--line))}
+header.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;padding-block:10px}
+.brand{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:.01em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:10px}
+.brand svg{flex:none}
+.backbtn{border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));background:var(--surface);color:var(--deep);font-weight:700;font-size:14px;padding:6px 14px;border-radius:999px;cursor:pointer}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:13.5px;color:var(--muted);margin:0 0 14px}
+.crumbs a{color:var(--deep);text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.crumbs .sep{color:var(--gold)}
+.crumbs [aria-current]{color:var(--ink);font-weight:600;max-width:40ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.res a.sn{display:block;text-decoration:none;color:inherit;border-radius:8px;margin-inline:-8px;padding:4px 8px}
+.res a.sn:hover{background:var(--accent-soft)}
+.res a.sn .go{display:block;font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--deep);margin-top:4px;opacity:0;transition:opacity .15s}
+.res a.sn:hover .go,.res a.sn:focus-visible .go{opacity:1}
+@media (hover:none){.res a.sn .go{opacity:1}}
+.text p.hit{background:color-mix(in srgb,var(--accent-soft) 70%,transparent);box-shadow:-14px 0 0 color-mix(in srgb,var(--accent-soft) 70%,transparent),14px 0 0 color-mix(in srgb,var(--accent-soft) 70%,transparent);border-radius:4px}
+mark.cur{outline:2px solid var(--gold)}
+.text p.hit{scroll-margin-top:110px}
+.hitnav{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:999px;padding:5px 8px;box-shadow:0 4px 18px color-mix(in srgb,var(--deep) 18%,transparent);font-size:13px}
+.hitnav button{border:0;background:var(--accent-soft);color:var(--ink);width:30px;height:30px;border-radius:50%;cursor:pointer}
+.hitnav span{min-width:4.5em;text-align:center;color:var(--muted)}
+.backbtn:hover{border-color:var(--gold);color:var(--ink)}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav a{text-decoration:none;color:var(--muted);font-weight:600;font-size:14px;padding:6px 11px;border-radius:999px}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--ink);background:var(--accent-soft);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 50%,transparent)}
+main{padding-block:22px 64px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,5.4vw,48px);line-height:1.05;letter-spacing:.005em}
+h2{font-size:30px;line-height:1.15}
+h3{font-size:22px;line-height:1.2}
+.lede{color:var(--muted);max-width:62ch;margin:.6em 0 0}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 6px}
+.eyebrow a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+/* sky panel */
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:30px clamp(18px,4vw,40px);margin-bottom:8px;
+  background:
+   radial-gradient(60% 50% at 82% 18%,color-mix(in srgb,#fff8e6 70%,transparent),transparent 70%),
+   radial-gradient(45% 30% at 15% 100%,var(--dawn),transparent 70%),
+   radial-gradient(40% 25% at 70% 105%,var(--dawn),transparent 70%),
+   linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 100%);
+  border:1px solid color-mix(in srgb,var(--gold) 35%,var(--line))}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:
+   radial-gradient(18% 9% at 22% 22%,color-mix(in srgb,#fff 55%,transparent),transparent 70%),
+   radial-gradient(22% 8% at 48% 12%,color-mix(in srgb,#fff 45%,transparent),transparent 70%);opacity:.8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero{background:
+   radial-gradient(60% 50% at 82% 18%,color-mix(in srgb,var(--gold) 18%,transparent),transparent 70%),
+   radial-gradient(50% 35% at 20% 105%,var(--dawn),transparent 70%),
+   linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 100%)}
+ :root:not([data-theme="light"]) .hero::after{opacity:.08}}
+:root[data-theme="dark"] .hero{background:
+   radial-gradient(60% 50% at 82% 18%,color-mix(in srgb,var(--gold) 18%,transparent),transparent 70%),
+   radial-gradient(50% 35% at 20% 105%,var(--dawn),transparent 70%),
+   linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 100%)}
+:root[data-theme="dark"] .hero::after{opacity:.08}
+.hero-in{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:20px;align-items:center}
+.hero-txt{min-width:0}
+.hero-emb svg{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 22px color-mix(in srgb,var(--gold) 35%,transparent))}
+.virtues{font-family:var(--display);font-size:19px;font-style:italic;color:var(--ink);opacity:.85;margin:.35em 0 0;letter-spacing:.02em}
+.virtues b{font-weight:600;font-style:normal;color:var(--accent);margin:0 .25em}
+.hero .lede{color:var(--ink);opacity:.8}
+/* search */
+.sbox{display:flex;gap:8px;margin-top:18px}
+.sbox input{flex:1;min-width:0;padding:13px 16px;border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));border-radius:999px;background:var(--surface);font-size:17px;box-shadow:0 2px 10px color-mix(in srgb,var(--deep) 10%,transparent)}
+.btn{border:0;background:var(--ink);color:var(--bg);font-weight:700;padding:0 22px;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--deep)}
+.btn.ghost{background:var(--surface);color:var(--deep);border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));padding:7px 14px}
+.btn.ghost:hover{border-color:var(--gold)}
+.btn[disabled]{opacity:.45;cursor:default}
+.filters{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;align-items:center;color:var(--ink);opacity:.9;font-size:14px}
+.filters select,.filters input{padding:5px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.filters input{width:5.2em}
+.hint{font-size:13px;color:var(--ink);opacity:.75;margin:10px 0 0}
+.hint code{background:var(--surface);padding:1px 6px;border-radius:5px;font-family:var(--ui)}
+.status{margin:22px 0 8px;color:var(--muted);font-size:14px}
+.results{display:flex;flex-direction:column}
+.res{padding:18px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:5.5em 1fr;gap:4px 14px}
+.res .d{color:var(--accent);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;padding-top:4px}
+.res .b{min-width:0}
+.res a.t{font-family:var(--display);font-size:23px;font-weight:600;color:var(--ink);text-decoration:none;line-height:1.2}
+.res a.t:hover{color:var(--deep)}
+.res .sn{font-family:var(--read);font-size:15px;color:var(--ink);opacity:.88;margin-top:6px}
+.res .meta{font-size:12.5px;color:var(--muted);margin-top:4px}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);text-decoration:none;white-space:nowrap}
+.chip:hover{border-color:var(--gold);color:var(--ink)}
+.pager{display:flex;gap:8px;margin-top:18px;align-items:center}
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.examples button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px}
+.examples button:hover{border-color:var(--gold)}
+/* themes */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:22px}
+.tcard{display:flex;flex-direction:column;gap:6px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--ink);min-width:0;transition:border-color .2s,transform .2s}
+.tcard:hover{border-color:var(--gold);transform:translateY(-2px)}
+.tcard h3{font-size:23px}
+.tcard p{margin:0;color:var(--muted);font-size:13.5px}
+.tcard .n{font-size:13px;color:var(--accent);font-weight:600}
+.spark{display:block;width:100%;height:34px}
+.spark rect{fill:var(--gold)}
+.bigspark{height:90px;margin-top:16px}
+.sparkw{position:relative}.axis{position:relative;height:16px;font-size:11px;color:var(--muted)}.axis span{position:absolute;transform:translateX(-50%);top:2px}
+.quote{font-family:var(--read);font-size:16.5px;line-height:1.7;padding:20px 0 18px;border-top:1px solid var(--line);position:relative}
+.quote::before{content:"✦";position:absolute;top:-10px;left:0;background:var(--bg);color:var(--gold);font-size:14px;padding-right:8px}
+.quote p{margin:0 0 8px}
+.quote .src{font-family:var(--ui);font-size:13px;color:var(--muted)}
+details{border-top:1px solid var(--line);padding:11px 0}
+summary{cursor:pointer;font-weight:600}
+summary::marker{color:var(--gold)}
+.list{list-style:none;padding:0;margin:8px 0 0;columns:2 300px;column-gap:28px}
+.list li{break-inside:avoid;padding:3px 0;font-size:14px}
+.list .d{color:var(--muted);font-variant-numeric:tabular-nums;margin-right:6px;font-size:12.5px}
+/* reader */
+.reader{max-width:68ch;margin:0 auto}
+.reader .head{margin-bottom:24px;text-align:center}
+.reader .head .chips{justify-content:center}
+.reader .info{color:var(--muted);font-size:14px;margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px}
+.orn{display:flex;align-items:center;gap:12px;color:var(--gold);margin:18px auto 0;max-width:260px}
+.orn::before,.orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.text{font-family:var(--read);font-size:18px;line-height:1.8}
+.text p{margin:0 0 1em}
+.rnav{display:flex;justify-content:space-between;gap:12px;margin-top:28px;border-top:1px solid var(--line);padding-top:14px;flex-wrap:wrap}
+.rnav a{text-decoration:none;max-width:48%}
+.years{display:flex;flex-direction:column}
+.loading{color:var(--muted);padding:20px 0}
+.foot{color:var(--muted);font-size:13px;padding-block:26px 34px;text-align:center}
+.foot .v{font-family:var(--display);font-size:18px;color:var(--accent);letter-spacing:.06em;margin-bottom:6px}
+.bghero{margin-bottom:4px}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin-top:18px}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-decoration:none;color:var(--ink);font-weight:600}
+.toc a:hover{border-color:var(--gold)}
+.toc .num{color:var(--accent);font-family:var(--display);font-size:21px}
+.bgsec{padding-top:36px;scroll-margin-top:80px}
+.summary{color:var(--muted);max-width:62ch;margin:.5em 0 12px}
+.summary span{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-right:8px}
+.pagehead{padding:26px clamp(18px,4vw,36px)}
+.pagehead .hero-in{grid-template-columns:minmax(0,1fr) 120px}
+@media (max-width:640px){.hero-in{grid-template-columns:1fr}.hero-emb{order:-1;width:150px;margin:0 auto}.pagehead .hero-in{grid-template-columns:1fr}.pagehead .hero-emb{width:84px;margin:0}}
+@media (max-width:560px){.res{grid-template-columns:1fr}.res .d{padding:0}.text{font-size:17px}.brand{font-size:21px}.sbox{flex-direction:column}.btn{padding:11px 22px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#tarsene"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--gold)" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="var(--deep)" stroke-width="1.6" stroke-linejoin="round"/></svg>Беседите на Учителя</a>
+  <button id="back" class="backbtn" type="button" hidden aria-label="Назад">← Назад</button>
+  <nav id="nav"><a href="#tarsene" data-v="tarsene">Търсене</a><a href="#balgaria" data-v="balgaria">България</a><a href="#temi" data-v="temi">Теми</a><a href="#hronologia" data-v="hronologia">Хронология</a><a href="#stihove" data-v="stihove">Библейски стихове</a></nav>
+</div></header>
+<main class="wrap" id="app"><div class="loading">Зареждане на каталога…</div></main>
+<div class="wrap foot"><div class="v">Любов · Мъдрост · Истина · Правда · Добродетел</div>3877 беседи на Петър Дънов (Беинса Дуно), 1895–1944. Текстовете са взети от beinsa.org; всяка беседа има връзка към оригинала.</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const app=$('#app');
+let META=null, THEMES=null, VERSES=null, MAP=null, BG=null;
+let HIST=[],cur=location.hash||'#tarsene',goingBack=false;
+const cache=new Map();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function norm(t){return t.toLowerCase().replace(/ё/g,'е').replace(/ѣ/g,'е').replace(/ѫ/g,'ъ').replace(/ѭ/g,'ю').replace(/і/g,'и').replace(/ъ(?![а-я])/g,'')}
+async function getJSON(path){
+  if(cache.has(path)) return cache.get(path);
+  const p=(async()=>{
+    const r=await fetch(path); if(!r.ok) throw new Error(path+' '+r.status);
+    const buf=new Uint8Array(await r.arrayBuffer());
+    let txt;
+    if(buf[0]===0x1f&&buf[1]===0x8b){
+      const s=new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'));
+      txt=await new Response(s).text();
+    } else txt=new TextDecoder().decode(buf);
+    return JSON.parse(txt);
+  })();
+  cache.set(path,p); p.catch(()=>cache.delete(path)); return p;
+}
+const shardOf=i=>getJSON('t/'+String(Math.floor(i/MAP.shard)).padStart(3,'0')+'.json');
+async function docText(i){const s=await shardOf(i);return s[i%MAP.shard]}
+const TH=()=>Object.fromEntries(THEMES.map(t=>[t.id,t]));
+function fmtDate(d){const m=d.match(/^(\d{4})-(\d\d)-(\d\d)$/);if(!m)return d;return `${+m[3]}.${m[2]}.${m[1]}`}
+function chips(ids){if(!THEMES||!ids.length)return '';const th=TH();return '<div class="chips">'+ids.map(id=>`<a class="chip" href="#tema-${id}">${esc(th[id].name)}</a>`).join('')+'</div>'}
+
+/* ---------- emblem ---------- */
+function pent(labels){
+  const c=200,R=158,pt=k=>{const a=(-90+k*72)*Math.PI/180;return [c+R*Math.cos(a),c+R*Math.sin(a)]};
+  const P=[0,1,2,3,4].map(pt);
+  const rays=[[4,1,'Мъдрост','#e2bd62',50],[0,2,'Любов','#eaa9a2',80],[0,3,'Истина','#9fcbec',20],[1,3,'Правда','#8cc497',80],[2,4,'Добродетел','#c8c1ee',20]];
+  const uid='p'+Math.random().toString(36).slice(2,7);
+  let defs='',body='',txt='';
+  rays.forEach(([a,b,w,col,off],k)=>{let [x1,y1]=P[a],[x2,y2]=P[b];if(x1>x2){[x1,x2]=[x2,x1];[y1,y2]=[y2,y1]}
+    defs+=`<path id="${uid}${k}" d="M${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}"/>`;
+    body+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${labels?26:32}" stroke-opacity=".93"/>`;
+    if(labels) txt+=`<text font-family="Manrope, Segoe UI, sans-serif" font-size="12.5" font-weight="700" letter-spacing="1.6" fill="#1d2f4a" dy="4.4"><textPath href="#${uid}${k}" startOffset="${off}%" text-anchor="middle">${w.toUpperCase()}</textPath></text>`;
+  });
+  const dots=Array.from({length:20},(_,k)=>{const a=k*18*Math.PI/180;return `<circle cx="${c+186*Math.cos(a)}" cy="${c+186*Math.sin(a)}" r="1.8" fill="var(--gold)"/>`}).join('');
+  return `<svg viewBox="0 0 400 400" role="img" aria-label="Пентаграм с петте добродетели: Любов, Мъдрост, Истина, Правда, Добродетел"><defs>${defs}<radialGradient id="${uid}g" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="#fff6dc" stop-opacity=".95"/><stop offset=".55" stop-color="var(--sky2)" stop-opacity=".7"/><stop offset="1" stop-color="var(--sky1)" stop-opacity=".9"/></radialGradient></defs>
+  <circle cx="200" cy="200" r="194" fill="none" stroke="var(--gold)" stroke-width="2"/><circle cx="200" cy="200" r="178" fill="url(#${uid}g)" stroke="var(--sky1)" stroke-width="9"/><circle cx="200" cy="200" r="172" fill="none" stroke="var(--gold)" stroke-width="1.5"/>${dots}
+  ${body}${txt}<circle cx="200" cy="205" r="13" fill="#fff6dc" stroke="var(--gold)" stroke-width="2"/></svg>`;
+}
+function pagehead(inner){return `<section class="hero pagehead"><div class="hero-in"><div class="hero-txt">${inner}</div><div class="hero-emb">${pent(false)}</div></div></section>`}
+/* ---------- search ---------- */
+function parseQuery(q){
+  const phrases=[];q=q.replace(/"([^"]+)"|„([^“”"]+)[“”"]/g,(_,a,b)=>{phrases.push(a||b);return ' '});
+  const terms=(norm(q).match(/[а-я]{2,}/g)||[]).map(stem);
+  const ph=phrases.map(p=>(norm(p).match(/[а-я]+/g)||[]).map(stem)).filter(x=>x.length);
+  return {terms,ph};
+}
+const ENDS=['ението','ането','ието','ения','ение','ания','ание','ане','ата','ите','ият','ият','ния','ост','ия','ът','ят','та','то','те','ни','на','но','а','е','и','о','у','я'];
+function stem(w){if(w.length<5)return w;for(const e of ENDS){if(w.endsWith(e)&&w.length-e.length>=4)return w.slice(0,-e.length)}return w}
+function bucketFor(w){const p=w.slice(0,2);let i=MAP.buckets.findIndex(([a,b])=>p>=a&&p<=b);return i}
+async function postings(w,exact){
+  const bi=bucketFor(w); if(bi<0) return new Map();
+  const B=await getJSON('ix/'+String(bi).padStart(3,'0')+'.json');
+  const out=new Map();
+  const add=arr=>{let d=0;for(let k=0;k<arr.length;k+=2){d+=arr[k];out.set(d,(out.get(d)||0)+arr[k+1])}};
+  if(exact||w.length<4){if(B[w])add(B[w])}
+  else for(const k in B){if(k.startsWith(w))add(B[k])}
+  return out;
+}
+function termRx(words,phrase){
+  const part=w=>w.split('').map(c=>c==='е'?'[еѣё]':c==='ъ'?'[ъѫ]':c).join('')+(w.length>1?'[а-яѣѫ]*':'(?![а-яѣѫ])');
+  if(phrase) return new RegExp('(?<![а-яѣѫ])'+words.map(part).join('[^а-яѣѫ]+'),'giu');
+  return new RegExp('(?<![а-яѣѫ])(?:'+words.map(part).join('|')+')','giu');
+}
+let S={pos:new Map(),jump:null,q:'',theme:'',from:'',to:'',sort:'rel',page:0,res:null,rx:null,busy:false};
+async function runSearch(){
+  const {terms,ph}=parseQuery(S.q);
+  const all=[...new Set([...terms,...ph.flat()])].filter(w=>w.length>=2);
+  if(!all.length){S.res=null;renderSearch();return}
+  S.busy=true;renderSearch();
+  const lists=await Promise.all(all.map(w=>postings(w)));
+  let cand=null;
+  lists.forEach(m=>{const s=new Set(m.keys());cand=cand?new Set([...cand].filter(x=>s.has(x))):s});
+  let ids=[...(cand||[])];
+  const yf=+S.from||0, yt=+S.to||9999;
+  ids=ids.filter(i=>{const y=+META[i][1].slice(0,4)||0;return (!S.from&&!S.to)||(y>=yf&&y<=yt)});
+  if(S.theme) ids=ids.filter(i=>META[i][7].includes(S.theme));
+  const N=MAP.N;
+  const score=i=>{let s=0;lists.forEach(m=>{const tf=m.get(i)||0;s+=(1+Math.log(tf))*Math.log(N/(m.size+1))});return s/Math.pow(Math.max(META[i][4],300)/2500,.35)};
+  const sc=new Map(ids.map(i=>[i,score(i)]));
+  S.rx=termRx(all,false);
+  S.phRx=ph.map(p=>termRx(p,true));
+  S.res=ids; S.sc=sc; S.verified=ph.length?0:null; S.page=0; sortRes();
+  S.busy=false; renderSearch();
+  if(ph.length) verifyPhrases();
+}
+function sortRes(){ if(!S.res)return; if(S.sort==='rel')S.res.sort((a,b)=>S.sc.get(b)-S.sc.get(a)); else S.res.sort((a,b)=>a-b)}
+async function verifyPhrases(){
+  const token=S.q; const ids=[...S.res]; const keep=[];
+  const byShard=new Map(); ids.forEach(i=>{const k=Math.floor(i/MAP.shard);if(!byShard.has(k))byShard.set(k,[]);byShard.get(k).push(i)});
+  let done=0; S.total=ids.length; S.res=[];
+  for(const [k,arr] of byShard){
+    const sh=await shardOf(arr[0]); if(S.q!==token)return;
+    arr.forEach(i=>{const t=sh[i%MAP.shard];if(S.phRx.every(r=>{r.lastIndex=0;return r.test(t)}))keep.push(i)});
+    done+=arr.length; S.verified=done; S.res=[...keep];
+    sortRes(); if(S.page===0) renderSearch(true);
+  }
+  S.verified=null; S.res=keep; sortRes(); renderSearch(true);
+}
+function snippet(t,i){
+  const rx=(S.phRx&&S.phRx.length?S.phRx[0]:S.rx); rx.lastIndex=0; const m=rx.exec(t);
+  if(i!=null) S.pos.set(i,m?m.index:0);
+  let a=0; if(m) a=Math.max(0,m.index-140);
+  let s=t.slice(a,a+380).replace(/\s+/g,' ');
+  if(a>0)s='…'+s.slice(s.indexOf(' ')+1); s=s.replace(/\s\S*$/,'')+'…';
+  return hl(esc(s));
+}
+function paraOf(t,pos){if(pos==null)return 0;const ps=t.split(/\n\s*\n/);let off=0;for(let k=0;k<ps.length;k++){const a=t.indexOf(ps[k],off);off=a+ps[k].length;if(pos>=a&&pos<off+2)return k}return 0}
+function hl(html){ if(!S.rx) return html; const r=new RegExp(S.rx.source,'giu'); return html.replace(r,m=>`<mark>${m}</mark>`)}
+function countHits(t){const r=new RegExp(S.rx.source,'giu');return (t.match(r)||[]).length}
+const PER=20;
+function renderSearch(keepForm){
+  if(!keepForm||!$('#q')){
+    const opts=THEMES?THEMES.map(t=>`<option value="${t.id}" ${S.theme===t.id?'selected':''}>${esc(t.name)}</option>`).join(''):'';
+    app.innerHTML=`<section class="hero"><div class="hero-in"><div class="hero-txt"><p class="eyebrow">Беинса Дуно · 3877 беседи · 1895–1944</p><h1>Какво казва Учителя за…</h1>
+    <p class="virtues">Любов <b>·</b> Мъдрост <b>·</b> Истина <b>·</b> Правда <b>·</b> Добродетел</p>
+    <p class="lede">Търсете дума или израз във всички беседи. Думите се търсят с всичките им форми: „любов“ намира и „любовта“, „любовни“.</p>
+    <form class="sbox" id="sf"><input id="q" type="search" autocomplete="off" placeholder="напр. прощаване, &quot;Бог е Любов&quot;" value="${esc(S.q)}" aria-label="Търсене"><button class="btn" type="submit">Търси</button></form>
+    <div class="filters"><label>Тема <select id="th"><option value="">всички</option>${opts}</select></label>
+    <label>Години <input id="yf" inputmode="numeric" placeholder="1914" value="${esc(S.from)}"> – <input id="yt" inputmode="numeric" placeholder="1944" value="${esc(S.to)}"></label>
+    <label>Подредба <select id="so"><option value="rel">по съвпадение</option><option value="chr" ${S.sort==='chr'?'selected':''}>по дата</option></select></label></div>
+    <p class="hint">Израз в кавички търси точно тази последователност: <code>"Бог е Любов"</code>. Няколко думи без кавички намират беседи, в които ги има всичките.</p></div><div class="hero-emb">${pent(true)}</div></div></section>
+    <div id="out"></div>`;
+    $('#sf').onsubmit=e=>{e.preventDefault();readForm();go()};
+    ['#th','#so'].forEach(s=>$(s).onchange=()=>{readForm();if(s==='#so'){sortRes();S.page=0;renderSearch(true)}else go()});
+    ['#yf','#yt'].forEach(s=>$(s).onchange=()=>{readForm();go()});
+  }
+  const out=$('#out');
+  if(S.busy){out.innerHTML='<p class="status">Търся…</p>';return}
+  if(!S.res){out.innerHTML=`<div class="examples">${['прощаване','"Бог е Любов"','молитва','Мъдростта','страданието','"новата култура"','слънцето изгрев','смъртта'].map(x=>`<button type="button" data-q="${esc(x)}">${esc(x)}</button>`).join('')}</div>`;
+    out.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{$('#q').value=b.dataset.q;readForm();go()});return}
+  const n=S.res.length, from=S.page*PER, pg=S.res.slice(from,from+PER);
+  let st=n?`${n.toLocaleString('bg')} беседи`+(S.verified!=null?` досега (проверени ${S.verified} от ${S.total} възможни)`:''):(S.verified!=null?'Проверявам израза…':'Няма беседи с тези думи.');
+  out.innerHTML=`<p class="status num">${st}</p><div class="results">${pg.map(i=>{const m=META[i];return `<div class="res"><div class="d">${esc(fmtDate(m[1]))}</div><div class="b"><a class="t" href="#b-${m[0]}" data-i="${i}">${esc(m[2])}</a><a class="sn" href="#b-${m[0]}" data-i="${i}" id="sn${i}" title="Отвори беседата на това място">&nbsp;</a><div class="meta" id="mt${i}">${m[5]?esc(m[5]):''}</div></div></div>`}).join('')}</div>
+  ${n>PER?`<div class="pager"><button class="btn ghost" id="pv" ${S.page?'':'disabled'}>← По-предишни</button><span class="num">${S.page+1} / ${Math.ceil(n/PER)}</span><button class="btn ghost" id="nx" ${from+PER<n?'':'disabled'}>Следващи →</button></div>`:''}`;
+  if($('#pv')){$('#pv').onclick=()=>{S.page--;renderSearch(true);window.scrollTo(0,0)};$('#nx').onclick=()=>{S.page++;renderSearch(true);window.scrollTo(0,0)}}
+  pg.forEach(async i=>{try{const t=await docText(i);const e=$('#sn'+i);if(e){e.innerHTML=snippet(t,i)+'<span class="go">Отвори на това място →</span>';const pk=paraOf(t,S.pos.get(i));const hr=`#b-${META[i][0]}-p${pk}`;e.setAttribute('href',hr);const tl=document.querySelector(`a.t[data-i="${i}"]`);if(tl)tl.setAttribute('href',hr);const k=countHits(t);const mt=$('#mt'+i);mt.textContent=[META[i][5],k+' съвпадения'].filter(Boolean).join(' · ')}}catch(e){}});
+}
+function readForm(){S.q=$('#q').value.trim();S.theme=$('#th').value;S.from=$('#yf').value.trim();S.to=$('#yt').value.trim();S.sort=$('#so').value}
+function go(){S.page=0;runSearch()}
+
+/* ---------- themes ---------- */
+function spark(years,cls,axis){
+  const ys=[];for(let y=1895;y<=1944;y++)ys.push(y);
+  const max=Math.max(1,...ys.map(y=>years[y]||0));const W=450,H=axis?78:34,bw=W/ys.length;const ax=axis?`<div class="axis">${[1900,1910,1920,1930,1940].map(y=>`<span style="left:${(y-1895+.5)/ys.length*100}%">${y}</span>`).join('')}</div>`:'';
+  return `<div class="sparkw"><svg class="spark ${cls||''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Разпределение по години">${ys.map((y,k)=>{const v=years[y]||0,h=v?Math.max(1.5,v/max*H):0;return `<rect x="${k*bw+.6}" y="${H-h}" width="${bw-1.2}" height="${h}"><title>${y}: ${v}</title></rect>`}).join('')}</svg>${ax}</div>`
+}
+function renderThemes(){
+  app.innerHTML=pagehead(`<p class="eyebrow">25 теми</p><h1>Главните теми в учението</h1>
+  <p class="lede">Темите са определени чрез анализ на всички 3877 текста (18 млн. думи): за всяка тема е преброено колко често се срещат ключовите ѝ понятия във всяка беседа. Беседа влиза в темата, когато я застъпва поне два пъти по-силно от средното.</p>`)+`
+  <div class="tgrid">${THEMES.map(t=>`<a class="tcard" href="#tema-${t.id}"><h3>${esc(t.name)}</h3><p>${esc(t.desc)}</p>${spark(t.years)}<span class="n num">${t.count} беседи</span></a>`).join('')}</div>`;
+}
+function renderTheme(id){
+  const t=TH()[id]; if(!t){app.innerHTML='<p>Няма такава тема.</p>';return}
+  const docs=[...t.docs].sort((a,b)=>a-b);
+  app.innerHTML=pagehead(`<p class="eyebrow"><a href="#temi">Теми</a> · ${t.count} беседи</p><h1>${esc(t.name)}</h1><p class="lede">${esc(t.desc)}</p>`)+`
+  ${spark(t.years,'bigspark',true)}
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px"><button class="btn ghost" id="ts">Търси в тази тема</button></div>
+  <h2 style="margin-top:22px">Най-характерни откъси</h2>
+  <div>${t.top.map(([i,q])=>{const m=META[i];return `<div class="quote">${q.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join('')}<div class="src"><a href="#b-${m[0]}">${esc(m[2])}</a> · ${esc(fmtDate(m[1]))}</div></div>`}).join('')}</div>
+  <details><summary>Всички ${t.count} беседи в темата, по дата</summary><ul class="list">${docs.map(i=>`<li><span class="d">${esc(META[i][1])}</span><a href="#b-${META[i][0]}">${esc(META[i][2])}</a></li>`).join('')}</ul></details>`;
+  $('#ts').onclick=()=>{S.theme=id;S.q='';S.res=null;location.hash='tarsene'};
+}
+/* ---------- Bulgaria ---------- */
+function renderBulgaria(){
+  const q=(i,t)=>{const m=META[i];return `<div class="quote">${t.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join('')}<div class="src"><a href="#b-${m[0]}">${esc(m[2])}</a> · ${esc(fmtDate(m[1]))}${m[5]?' · '+esc(m[5]):''}</div></div>`};
+  app.innerHTML=`<section class="hero bghero"><div class="hero-in"><div class="hero-txt"><p class="eyebrow">Специален раздел</p><h1>България и българите в новото време</h1>
+  <p class="lede">Какво казва Учителя за призванието на българския народ и славянството, за това как българите могат да преминат през мъчнотиите на времето и да помогнат за повдигането на световния дух. Българите, България или славянството се споменават в ${BG.total.toLocaleString('bg')} от 3877 беседи. Тук са подбрани ${BG.sections.reduce((s,x)=>s+x.items.length,0)} ключови откъса.</p>
+  <div class="toc">${BG.sections.map((x,k)=>`<a href="#bg-${x.id}"><span class="num">${k+1}</span>${esc(x.name)}</a>`).join('')}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="btn ghost" id="bgs">Търси „българи“ във всички беседи</button><button class="btn ghost" id="bgs2">Търси „славяни“</button></div></div><div class="hero-emb">${pent(true)}</div></div></section>
+  ${BG.sections.map((x,k)=>`<section class="bgsec" id="bg-${x.id}"><p class="eyebrow num">Част ${k+1} от ${BG.sections.length}</p><h2>${esc(x.name)}</h2><p class="summary"><span>Обобщение</span>${esc(x.intro)}</p>${x.items.map(([i,t])=>q(i,t)).join('')}</section>`).join('')}
+  <section class="bgsec"><h2>Беседите, в които България се споменава най-често</h2><ul class="list">${BG.top.map(([i,c])=>`<li><span class="d">${esc(META[i][1])}</span><a href="#b-${META[i][0]}">${esc(META[i][2])}</a> <span class="d">· ${c}</span></li>`).join('')}</ul></section>`;
+  const s=w=>()=>{S.q=w;S.theme='';S.res=null;location.hash='tarsene';setTimeout(()=>{$('#q').value=w;readForm();go()},0)};
+  $('#bgs').onclick=s('българи'); $('#bgs2').onclick=s('славяни');
+}
+/* ---------- chronology & verses ---------- */
+function renderChron(){
+  const by={};META.forEach((m,i)=>{const y=m[1].slice(0,4);(by[y]=by[y]||[]).push(i)});
+  const ys=Object.keys(by).sort();
+  app.innerHTML=pagehead(`<p class="eyebrow">1895–1944</p><h1>Хронология</h1><p class="lede">Всички беседи по години, в реда, в който са държани.</p>`)+`
+  ${spark(Object.fromEntries(ys.map(y=>[y,by[y].length])),'bigspark',true)}
+  <div class="years" style="margin-top:14px">${ys.map(y=>`<details><summary><span class="num">${y}</span> · <span class="num">${by[y].length}</span> беседи</summary><ul class="list">${by[y].map(i=>`<li><span class="d">${esc(fmtDate(META[i][1]))}</span><a href="#b-${META[i][0]}">${esc(META[i][2])}</a></li>`).join('')}</ul></details>`).join('')}</div>`;
+}
+function renderVerses(){
+  const books={};VERSES.forEach(([v,ids])=>{const b=v.replace(/ \d+:\d+$/,'');books[b]=(books[b]||0)+ids.length});
+  const bk=Object.entries(books).sort((a,b)=>b[1]-a[1]);
+  app.innerHTML=pagehead(`<p class="eyebrow">Библията в беседите</p><h1>Библейски стихове</h1>
+  <p class="lede">Много беседи започват с библейски стих. Тук са стиховете, разпознати в началото или в бележките на ${VERSES.reduce((s,v)=>s+v[1].length,0)} беседи, групирани по стих. Най-често цитираните книги са ${bk.slice(0,4).map(b=>esc(b[0])).join(', ')}.</p>`)+`
+  <div class="chips" style="margin:14px 0">${bk.map(([b,n])=>`<span class="chip">${esc(b)} · ${n}</span>`).join('')}</div>
+  ${VERSES.map(([v,ids])=>`<details><summary>${esc(v)} · <span class="num">${ids.length}</span></summary><ul class="list">${ids.map(i=>`<li><span class="d">${esc(META[i][1])}</span><a href="#b-${META[i][0]}">${esc(META[i][2])}</a></li>`).join('')}</ul></details>`).join('')}`;
+}
+/* ---------- reader ---------- */
+const byNum=new Map();
+async function renderReader(num,para){
+  const i=byNum.get(num); if(i==null){app.innerHTML='<p>Няма такава беседа.</p>';return}
+  const m=META[i];
+  app.innerHTML=`<article class="reader"><div class="head"><p class="eyebrow num">Беседа ${m[0]} от 3877</p><h1>${esc(m[2])}</h1>
+  <div class="info"><span>${esc(fmtDate(m[1]))}</span>${m[5]?`<span>${esc(m[5])}</span>`:''}${m[6]?`<span>${esc(m[6])}</span>`:''}<span class="num">${m[4].toLocaleString('bg')} думи</span><a href="https://beinsa.org/beseda/${esc(m[3])}" target="_blank" rel="noopener">Оригинал на beinsa.org ↗</a></div>${chips(m[7])}<div class="orn">✦</div></div>
+  <div class="text" id="tx"><p class="loading">Зареждане на текста…</p></div>
+  <div class="rnav">${i>0?`<a href="#b-${META[i-1][0]}">← ${esc(META[i-1][2])}</a>`:'<span></span>'}${i<META.length-1?`<a href="#b-${META[i+1][0]}" style="text-align:right">${esc(META[i+1][2])} →</a>`:''}</div></article>`;
+  window.scrollTo(0,0);
+  try{const t=await docText(i);const useHl=S.rx&&S.res&&S.res.includes(i);
+    const paras=t.split(/\n\s*\n/); let hitP=(para!=null&&para<paras.length)?para:-1;
+    $('#tx').innerHTML=paras.map((p,k)=>`<p${k===hitP?' class="hit" id="hit"':''}>${(useHl?hl(esc(p)):esc(p)).replace(/\n/g,'<br>')}</p>`).join('');
+    setupHits(hitP);
+  }catch(e){$('#tx').innerHTML='<p>Текстът не можа да се зареди. Опитайте отново.</p>'}
+}
+/* ---------- breadcrumbs ---------- */
+function trailOf(h){
+  h=h||'#tarsene';
+  if(h==='#tarsene'||h==='#') return [[ '#tarsene', S.q?`Търсене „${S.q}“`:'Търсене']];
+  if(h==='#balgaria') return [['#balgaria','България']];
+  if(h.startsWith('#bg-')){const x=BG&&BG.sections.find(z=>'#bg-'+z.id===h);return [['#balgaria','България'],[h,x?x.name:'']]}
+  if(h==='#temi') return [['#temi','Теми']];
+  if(h.startsWith('#tema-')){const t=THEMES.find(z=>'#tema-'+z.id===h);return [['#temi','Теми'],[h,t?t.name:'']]}
+  if(h==='#hronologia') return [['#hronologia','Хронология']];
+  if(h==='#stihove') return [['#stihove','Библейски стихове']];
+  if(h.startsWith('#b-')){const i=byNum.get(+(h.match(/^#b-(\d+)/)||[0,0])[1]);
+    let o=null;for(let k=HIST.length-1;k>=0;k--){if(!HIST[k].startsWith('#b-')){o=HIST[k];break}}
+    return [...(o?trailOf(o):[]),[h,i!=null?META[i][2]:'Беседа']]}
+  return [];
+}
+function crumbs(){
+  const t=trailOf(cur); if(!t.length||cur==='#tarsene'||cur==='#'||cur==='') return '';
+  const full=[['#tarsene','Начало'],...t.filter(([h])=>!(h==='#tarsene'&&t.length>1&&!S.q))];
+  return `<nav class="crumbs" aria-label="Къде се намирате">${full.map(([h,l],k)=>k===full.length-1?`<span aria-current="page">${esc(l)}</span>`:`<a href="${h}">${esc(l)}</a>`).join('<span class="sep">›</span>')}</nav>`;
+}
+function setupHits(hitP){
+  const old=$('#hitnav'); if(old) old.remove();
+  const marks=[...document.querySelectorAll('#tx mark')];
+  let k=0;
+  if(hitP>=0){const hp=$('#hit');const f=marks.findIndex(m=>hp.contains(m));k=f>=0?f:0}
+  const target=hitP>=0?$('#hit'):marks[0];
+  if(target){const sc=()=>target.scrollIntoView({block:hitP>=0?'start':'center'});setTimeout(sc,120);setTimeout(sc,600)}
+  if(!marks.length) return;
+  const nav=document.createElement('div');nav.id='hitnav';nav.className='hitnav';
+  nav.innerHTML=`<button type="button" aria-label="Предишно съвпадение">▲</button><span class="num"></span><button type="button" aria-label="Следващо съвпадение">▼</button>`;
+  document.body.appendChild(nav);
+  const lab=nav.querySelector('span');
+  const show=()=>{marks.forEach(m=>m.classList.remove('cur'));marks[k].classList.add('cur');lab.textContent=`${k+1} / ${marks.length}`};
+  const go=d=>{k=(k+d+marks.length)%marks.length;show();marks[k].scrollIntoView({block:'center',behavior:'smooth'})};
+  nav.children[0].onclick=()=>go(-1);nav.children[2].onclick=()=>go(1);show();
+}
+/* ---------- router ---------- */
+async function route(){
+  {const o=$('#hitnav'); if(o) o.remove();}
+  const h=location.hash.slice(1)||'tarsene';
+  const v=h.startsWith('bg-')?'balgaria':h.startsWith('tema-')?'temi':h.startsWith('b-')?'':h;
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  if(h==='tarsene'){renderSearch();if(S.theme&&!S.res&&$('#th'))$('#th').value=S.theme;return}
+  if(h==='balgaria'){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();window.scrollTo(0,0);return}
+  if(h.startsWith('bg-')){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();const e=document.getElementById(h);if(e)e.scrollIntoView();return}
+  if(h==='temi')return renderThemes();
+  if(h.startsWith('tema-'))return renderTheme(h.slice(5));
+  if(h==='hronologia')return renderChron();
+  if(h==='stihove'){if(!VERSES)VERSES=await getJSON('verses.json');return renderVerses()}
+  if(h.startsWith('b-')){const mm=h.match(/^b-(\d+)(?:-p(\d+))?$/);return renderReader(mm?+mm[1]:+h.slice(2),mm&&mm[2]!=null?+mm[2]:null)}
+  renderSearch();
+}
+(async()=>{
+  try{[META,MAP,THEMES]=await Promise.all([getJSON('meta.json'),getJSON('ix/map.json'),getJSON('themes.json')]);}
+  catch(e){app.innerHTML='<p>Каталогът не можа да се зареди. Презаредете страницата.</p>';return}
+  META.forEach((m,i)=>byNum.set(m[0],i));
+  const SCROLL={};
+  const bb=$('#back');
+  window.addEventListener('hashchange',async()=>{
+    SCROLL[cur]=window.scrollY;
+    const back=goingBack;goingBack=false;
+    if(!back&&location.hash!==cur)HIST.push(cur);
+    cur=location.hash||'#tarsene';
+    bb.hidden=!HIST.length;
+    await route();
+    const c=crumbs(); if(c) app.insertAdjacentHTML('afterbegin',c);
+    if(back&&SCROLL[cur]!=null){const y=SCROLL[cur];setTimeout(()=>window.scrollTo(0,y),60)}
+  });
+  bb.onclick=()=>{if(!HIST.length){location.hash='tarsene';return}goingBack=true;location.hash=HIST.pop()};
+  route().then(()=>{const c=crumbs();if(c)app.insertAdjacentHTML('afterbegin',c)});
+})();
+</script>
