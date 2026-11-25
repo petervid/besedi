@@ -1040,7 +1040,9 @@ function waitList(n){
   if(n<40)setTimeout(()=>waitList(n+1),250);
 }
 /* the lessons follow the number at the start of each video title (the playlist order is not the lesson order) */
-const lnum=t=>{const m=/^\D{0,3}?(\d{1,3})(?!\d)/.exec(t||'');return m?+m[1]:Infinity};
+const lnum=t=>{t=(t||'').toLowerCase();
+  if(/сл[ъь]нчеви\s+л[ъь]чи/.test(t))return 900;if(/пентаграм/.test(t))return 901;
+  const m=/(?:^|[^\d])(\d{1,2})(?!\d)/.exec(t.replace(/(?:18|19|20)\d\d/g,' '));return m?+m[1]:Infinity};
 async function orderList(ids){
   const keep=ids.slice(0,CP.C.count);
   const tt=await Promise.race([Promise.all(keep.map(vtitle)),new Promise(r=>setTimeout(()=>r(null),8000))]);
