@@ -104,10 +104,6 @@ main,.foot{position:relative;z-index:1}
 .tcard:hover,.toc a:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--gold) 60%,transparent),0 10px 34px color-mix(in srgb,var(--gold) 22%,transparent)}
 .text p.dc::first-letter{float:left;font-family:var(--display);font-weight:700;font-size:3.9em;line-height:.78;padding:.08em .1em 0 0;color:var(--accent)}
 .backbtn:hover{border-color:var(--gold);color:var(--ink)}
-nav{display:flex;gap:2px;flex-wrap:wrap}
-nav a{text-decoration:none;color:var(--muted);font-weight:600;font-size:14px;padding:6px 11px;border-radius:999px}
-nav a:hover{color:var(--ink)}
-nav a.on{color:var(--ink);background:var(--accent-soft);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 50%,transparent)}
 main{padding-block:22px 64px}
 h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
 h1{font-size:clamp(32px,5.4vw,48px);line-height:1.05;letter-spacing:.005em}
@@ -257,10 +253,10 @@ h2{font-weight:500;font-size:clamp(28px,4vw,34px)}
 .qa button{font-family:var(--ui);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px;font-size:12.5px;cursor:pointer;color:var(--muted)}
 .qa button:hover{border-color:var(--gold);color:var(--ink)}
 .qa button.on{color:var(--accent);border-color:var(--gold);background:var(--accent-soft)}
-nav a .cnt{display:inline-block;min-width:1.5em;margin-left:4px;padding:0 5px;border-radius:999px;background:var(--gold);color:#fff;font-size:11px;line-height:1.6;text-align:center}
+#nav .cnt,.menubtn .cnt{display:inline-block;min-width:1.5em;margin-left:4px;padding:0 5px;border-radius:999px;background:var(--gold);color:#fff;font-size:11px;line-height:1.6;text-align:center}
 #selbar{position:fixed;left:50%;bottom:calc(74px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:7;display:flex;gap:6px;padding:6px;background:var(--ink);border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.25)}
 #selbar[hidden]{display:none}
-nav a .cnt[hidden]{display:none}
+#nav .cnt[hidden],.menubtn .cnt[hidden]{display:none}
 #selbar button{border:0;background:transparent;color:var(--bg);font-weight:600;font-size:13.5px;padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
 #selbar button:hover{background:color-mix(in srgb,var(--bg) 16%,transparent)}
 #toast{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:9;background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.2);transition:opacity .3s}
@@ -324,14 +320,37 @@ nav a .cnt[hidden]{display:none}
 /* always-visible top bar: fixed, the page is pushed down by its measured height */
 body{padding-top:var(--hh,108px)}
 .crumbs,.bgsec,.text p.hit{scroll-margin-top:calc(var(--hh,108px) + 16px)}
-nav a{white-space:nowrap;flex:none}
 @media (max-width:640px){
  header.top .wrap{gap:4px 10px;padding-block:8px 6px}
  .brand{font-size:20px}
- nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex:1 0 100%;min-width:0;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 26px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 26px),transparent 100%)}
- nav::-webkit-scrollbar{display:none}
- nav a{font-size:13.5px;padding:6px 10px}
 }
+
+/* ---------- hamburger menu ---------- */
+header.top .wrap{flex-wrap:nowrap}
+.menubtn{margin-left:auto;display:inline-flex;align-items:center;gap:9px;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));background:var(--surface);color:var(--ink);font:700 14px/1 var(--ui);padding:9px 14px;border-radius:999px;cursor:pointer;flex:none}
+.menubtn:hover{border-color:var(--gold)}
+.menubtn .bars{display:grid;gap:4px;width:18px}
+.menubtn .bars i{display:block;height:2px;border-radius:2px;background:currentColor;transition:transform .25s,opacity .2s}
+.menubtn[aria-expanded="true"] .bars i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menubtn[aria-expanded="true"] .bars i:nth-child(2){opacity:0}
+.menubtn[aria-expanded="true"] .bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.menubtn[aria-expanded="true"] .cnt{display:none}
+.menu{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));box-shadow:0 24px 48px -24px color-mix(in srgb,var(--deep) 45%,transparent);max-height:calc(100dvh - var(--hh,64px));overflow-y:auto;overscroll-behavior:contain;animation:menuin .22s ease-out}
+.menu[hidden]{display:none}
+@keyframes menuin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.mgrid{max-width:920px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 24px;padding-block:18px 22px}
+.mgroup{min-width:0}.mh{margin:0 0 6px;padding:0 12px;font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+.menu a{display:block;text-decoration:none;color:var(--ink);padding:9px 12px;border-radius:12px}
+.menu a b{display:block;font-size:15.5px;font-weight:700}
+.menu a small{display:block;margin-top:2px;font-size:13px;color:var(--muted);line-height:1.35}
+.menu a:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
+.menu a.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--gold)}
+.menuveil{position:fixed;inset:0;z-index:14;background:color-mix(in srgb,var(--ink) 28%,transparent);animation:menuin .2s ease-out}
+.menuveil[hidden]{display:none}
+body.menu-open{overflow:hidden}
+@media (max-width:900px){.mgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.mgrid{grid-template-columns:1fr;gap:14px;padding-block:12px 20px}.menubtn .ml{display:none}.menubtn{padding:10px 12px}.backbtn{padding:6px 11px}}
+@media (prefers-reduced-motion:reduce){.menu,.menuveil{animation:none}.menubtn .bars i{transition:none}}
 
 /* ---------- UX polish ---------- */
 .skip{position:fixed;left:12px;top:-60px;z-index:40;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;transition:top .2s}
@@ -340,8 +359,8 @@ main:focus{outline:none}
 .totop{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;width:44px;height:44px;border-radius:50%;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));background:var(--surface);color:var(--deep);font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px color-mix(in srgb,var(--deep) 18%,transparent)}
 .totop[hidden]{display:none}.totop:hover{border-color:var(--gold);color:var(--ink)}
 .brand:hover{color:var(--deep)}
-nav a:focus-visible,.backbtn:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-@media (pointer:coarse){nav a{min-height:40px;display:inline-flex;align-items:center}.chip{padding:6px 12px}.qa button{padding:7px 13px}.backbtn{min-height:40px}.examples button{min-height:40px}}
+#nav a:focus-visible,.menubtn:focus-visible,.backbtn:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (pointer:coarse){.menubtn{min-height:44px}.chip{padding:6px 12px}.qa button{padding:7px 13px}.backbtn{min-height:40px}.examples button{min-height:40px}}
 
 /* ---------- Paneurhythmy ---------- */
 .video{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#0d1828;border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));box-shadow:0 14px 44px -20px color-mix(in srgb,var(--deep) 45%,transparent);margin-top:10px}
@@ -380,9 +399,11 @@ nav a:focus-visible,.backbtn:focus-visible,.btn:focus-visible{outline:2px solid 
 <header class="top"><div class="wrap">
   <a class="brand" href="#tarsene"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--gold)" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="var(--deep)" stroke-width="1.6" stroke-linejoin="round"/></svg>Беседите на Учителя</a>
   <button id="back" class="backbtn" type="button" hidden aria-label="Назад">← Назад</button>
-  <nav id="nav"><a href="#tarsene" data-v="tarsene">Търсене</a><a href="#balgaria" data-v="balgaria">България</a><a href="#temi" data-v="temi">Теми</a><a href="#hronologia" data-v="hronologia">Хронология</a><a href="#stihove" data-v="stihove">Библейски стихове</a><a href="#paneuritmia" data-v="paneuritmia">Паневритмия</a><a href="#slovo" data-v="slovo">Словото</a><a href="#otkasi" data-v="otkasi">♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></a></nav>
-</div></header>
-<div id="prog" aria-hidden="true"></div><div id="dawn" aria-hidden="true"></div>
+  <button id="menubtn" class="menubtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Отвори менюто"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="ml">Меню</span><span class="cnt" id="fcnt2" hidden></span></button>
+</div>
+<nav id="nav" class="menu" aria-label="Главно меню" hidden><div class="mgrid"><div class="mgroup"><p class="mh">Четене и търсене</p><a href="#tarsene" data-v="tarsene"><b>Търсене</b><small>Дума или израз във всички беседи</small></a><a href="#hronologia" data-v="hronologia"><b>Хронология</b><small>Беседите по години и серии</small></a><a href="#stihove" data-v="stihove"><b>Библейски стихове</b><small>Стиховете, които Учителя тълкува</small></a></div><div class="mgroup"><p class="mh">Учението</p><a href="#temi" data-v="temi"><b>Теми</b><small>Подбрани откъси по теми</small></a><a href="#balgaria" data-v="balgaria"><b>България</b><small>България и българите в новото време</small></a><a href="#paneuritmia" data-v="paneuritmia"><b>Паневритмия</b><small>Видео курс, смисъл и упражнения</small></a></div><div class="mgroup"><p class="mh">Изследване</p><a href="#slovo" data-v="slovo"><b>Словото</b><small>Как се променя словото през годините</small></a></div><div class="mgroup"><p class="mh">Лично</p><a href="#otkasi" data-v="otkasi"><b>♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></b><small>Запазените от вас откъси</small></a></div></div></nav>
+</header>
+<div class="menuveil" id="menuveil" hidden></div><div id="prog" aria-hidden="true"></div><div id="dawn" aria-hidden="true"></div>
 <div id="selbar" hidden><button type="button" id="sbsave">♡ Запази откъса</button><button type="button" id="sbshare">Сподели като картинка</button></div><div id="toast" hidden role="status"></div><div id="vtip" hidden></div><div class="modal" id="shr" hidden><div class="box"><img id="shimg" alt="Откъсът като картинка"><div class="acts"><button class="btn ghost" id="shgo" type="button">Сподели</button><a class="btn ghost" id="shdl" download="beseda-otkas.png">Изтегли</a><button class="btn ghost" id="shx" type="button">Затвори</button></div></div></div>
 <button type="button" id="totop" class="totop" hidden aria-label="Към началото на страницата">↑</button>
 <main class="wrap" id="app" lang="bg" tabindex="-1"><div class="loading">Зареждане на каталога…</div></main>
@@ -436,10 +457,11 @@ function pent(labels){
 function pagehead(inner){return `<section class="hero pagehead"><div class="hero-in"><div class="hero-txt">${inner}</div><div class="hero-emb">${pent(false)}</div></div></section>`}
 /* ---------- search ---------- */
 function parseQuery(q){
-  const phrases=[];q=q.replace(/"([^"]+)"|„([^“”"]+)[“”"]/g,(_,a,b)=>{phrases.push(a||b);return ' '});
+  /* text in any kind of quotes ("…", „…“, “…”, «…», '…') is an exact phrase: these words, in this order, in this form */
+  const phrases=[];q=q.replace(/["“”„«»'‘’‚]([^"“”„«»]+?)["“”„«»'‘’]/g,(_,a)=>{phrases.push(a);return ' '});
   const terms=(norm(q).match(/[а-я]{2,}/g)||[]).map(stem);
-  const ph=phrases.map(p=>(norm(p).match(/[а-я]+/g)||[]).map(stem)).filter(x=>x.length);
-  return {terms,ph};
+  const ex=phrases.map(p=>norm(p).match(/[а-я]+/g)||[]).filter(x=>x.length);
+  return {terms,ph:ex.map(x=>x.map(stem)),ex};
 }
 const ENDS=['ението','ането','ието','ения','ение','ания','ание','ане','ата','ите','ият','ият','ния','ост','ия','ът','ят','та','то','те','ни','на','но','а','е','и','о','у','я'];
 function stem(w){if(w.length<5)return w;for(const e of ENDS){if(w.endsWith(e)&&w.length-e.length>=4)return w.slice(0,-e.length)}return w}
@@ -453,6 +475,11 @@ async function postings(w,exact){
   else for(const k in B){if(k.startsWith(w))add(B[k])}
   return out;
 }
+/* exact words in sequence; tolerant only of the old spelling (ѣ, ѫ, і, final ъ) */
+function exactRx(words){
+  const ch=c=>c==='е'?'[еѣё]':c==='ъ'?'[ъѫ]':c==='ю'?'[юѭ]':c==='и'?'[иі]':c;
+  return new RegExp('(?<![а-яѣѫѭі])'+words.map(w=>w.split('').map(ch).join('')+'[ъѫ]?').join('[^а-яѣѫѭі]+')+'(?![а-яѣѫѭі])','giu');
+}
 function termRx(words,phrase){
   const part=w=>w.split('').map(c=>c==='е'?'[еѣё]':c==='ъ'?'[ъѫ]':c).join('')+(w.length>1?'[а-яѣѫ]*':'(?![а-яѣѫ])');
   if(phrase) return new RegExp('(?<![а-яѣѫ])'+words.map(part).join('[^а-яѣѫ]+'),'giu');
@@ -460,8 +487,9 @@ function termRx(words,phrase){
 }
 let S={pos:new Map(),jump:null,q:'',theme:'',from:'',to:'',sort:'rel',page:0,res:null,rx:null,busy:false};
 async function runSearch(){
-  const {terms,ph}=parseQuery(S.q);
-  const all=[...new Set([...terms,...ph.flat()])].filter(w=>w.length>=2);
+  const {terms,ph,ex}=parseQuery(S.q);
+  let all=[...new Set([...terms,...ph.flat()])].filter(w=>w.length>=2);
+  if(!all.length&&ex.length)all=[...new Set(ex.flat())];
   if(!all.length){S.res=null;renderSearch();return}
   S.busy=true;renderSearch();
   const lists=await Promise.all(all.map(w=>postings(w)));
@@ -474,8 +502,8 @@ async function runSearch(){
   const N=MAP.N;
   const score=i=>{let s=0;lists.forEach(m=>{const tf=m.get(i)||0;s+=(1+Math.log(tf))*Math.log(N/(m.size+1))});return s/Math.pow(Math.max(META[i][4],300)/2500,.35)};
   const sc=new Map(ids.map(i=>[i,score(i)]));
-  S.rx=termRx(all,false);
-  S.phRx=ph.map(p=>termRx(p,true));
+  S.phRx=ex.map(exactRx);
+  S.rx=new RegExp([...S.phRx.map(r=>r.source),...(terms.length?[termRx(terms,false).source]:[])].join('|'),'giu');
   S.res=ids; S.sc=sc; S.verified=ph.length?0:null; S.page=0; sortRes();
   S.busy=false; renderSearch();
   if(ph.length) verifyPhrases();
@@ -510,7 +538,7 @@ function renderSearch(keepForm){
     const opts=THEMES?THEMES.map(t=>`<option value="${t.id}" ${S.theme===t.id?'selected':''}>${esc(t.name)}</option>`).join(''):'';
     app.innerHTML=`<section class="hero"><div class="hero-in"><div class="hero-txt"><p class="eyebrow">Беинса Дуно · 3877 беседи · 1895–1944</p><h1>Какво казва Учителя <em>за…</em></h1>
     <p class="virtues">Любов <b>·</b> Мъдрост <b>·</b> Истина <b>·</b> Правда <b>·</b> Добродетел</p>
-    <p class="lede">Търсете дума или израз във всички беседи. Думите се търсят с всичките им форми: „любов“ намира и „любовта“, „любовни“.</p>
+    <p class="lede">Търсете дума или израз във всички беседи. Думите се търсят с всичките им форми: „любов“ намира и „любовта“, „любовни“. Израз в кавички се търси точно, дума по дума: "Бог е Любов".</p>
     <form class="sbox" id="sf"><input id="q" type="search" autocomplete="off" placeholder="напр. прощаване, &quot;Бог е Любов&quot;" value="${esc(S.q)}" aria-label="Търсене"><button class="btn" type="submit">Търси</button></form>
     <div class="filters"><label>Тема <select id="th"><option value="">всички</option>${opts}</select></label>
     <label>Години <input id="yf" inputmode="numeric" placeholder="1914" value="${esc(S.from)}"> – <input id="yt" inputmode="numeric" placeholder="1944" value="${esc(S.to)}"></label>
@@ -704,7 +732,7 @@ function toggleFav(i,t,p){
   if(j>=0){a.splice(j,1);saveFavs(a);toast('Откъсът е премахнат');return false}
   a.unshift({i,t:t.trim(),p:p==null?null:p,at:Date.now()});if(saveFavs(a))toast('Запазено в „Моите откъси“ ✓');return true;
 }
-function favCount(){const c=$('#fcnt');if(!c)return;const n=favs().length;c.hidden=!n;c.textContent=n}
+function favCount(){const n=favs().length;['#fcnt','#fcnt2'].forEach(x=>{const c=$(x);if(c){c.hidden=!n;c.textContent=n}})}
 let TT=null;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(TT);TT=setTimeout(()=>t.hidden=true,2200)}
 const qText=el=>[...el.querySelectorAll(':scope>p')].map(p=>p.textContent).join('\n\n');
 function markFavBtns(root){(root||app).querySelectorAll('.quote[data-i]').forEach(q=>{const b=q.querySelector('[data-act="fav"]');if(!b)return;const on=isFav(+q.dataset.i,qText(q));b.classList.toggle('on',on);b.textContent=on?'♥ Запазено':'♡ Запази'})}
@@ -933,7 +961,17 @@ async function renderSlovo(){
 /* keep the page below the fixed top bar, and keep the active menu item in view */
 {const hd=document.querySelector('header.top');const fit=()=>document.documentElement.style.setProperty('--hh',hd.offsetHeight+'px');fit();
  if('ResizeObserver' in window)new ResizeObserver(fit).observe(hd);else addEventListener('resize',fit);}
-function navInView(){const a=document.querySelector('#nav a.on'),n=$('#nav');if(a&&n.scrollWidth>n.clientWidth)n.scrollTo({left:a.offsetLeft-n.clientWidth/2+a.offsetWidth/2,behavior:RM.matches?'auto':'smooth'})}
+/* hamburger menu: grouped sections, closes on Esc, outside click and navigation */
+function menuOpen(){return $('#menubtn').getAttribute('aria-expanded')==='true'}
+function setMenu(open,focusBtn){const b=$('#menubtn'),n=$('#nav');if(open===menuOpen())return;
+  b.setAttribute('aria-expanded',open);b.setAttribute('aria-label',open?'Затвори менюто':'Отвори менюто');n.hidden=!open;$('#menuveil').hidden=!open;document.body.classList.toggle('menu-open',open);
+  if(open){(n.querySelector('a.on')||n.querySelector('a')).focus({preventScroll:true})}else if(focusBtn)b.focus()}
+$('#menubtn').onclick=()=>setMenu(!menuOpen());
+$('#menuveil').onclick=()=>setMenu(false);
+$('#nav').addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuOpen()){e.preventDefault();setMenu(false,true)}});
+$('#nav').addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=[$('#menubtn'),...$('#nav').querySelectorAll('a')];const i=f.indexOf(document.activeElement);
+  if(e.shiftKey&&i===1){e.preventDefault();f[0].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}});
 
 /* page titles in the browser tab */
 const SITE='Беседите на Учителя';
@@ -952,7 +990,7 @@ const isHome=h=>!h||h==='#'||h==='#tarsene';
 function syncBack(){$('#back').hidden=!HIST.length||isHome(cur)}
 function resetHome(){S.q='';S.res=null;S.theme='';S.from='';S.to='';S.page=0;S.rx=null;HIST=[];DAILY.shift=0;syncBack()}
 document.querySelector('.brand').addEventListener('click',e=>{
-  resetHome();
+  resetHome();setMenu(false);
   if(isHome(location.hash)){e.preventDefault();renderSearch();setTitle();window.scrollTo({top:0,behavior:RM.matches?'auto':'smooth'})}
 });
 /* back to top */
@@ -986,8 +1024,8 @@ async function vtitle(id){
 }
 async function initCourse(C){
   const box=$('#ytp');if(!box)return;
-  const st=cget();const start=Math.max(0,+st.last||0);
-  CP={ids:[],k:start,player:null,watched:new Set(st.done||[]),timer:null};
+  const st=cget();const start=Math.min(Math.max(0,+st.last||0),C.count-1);
+  CP={C,ids:[],k:start,player:null,watched:new Set(st.done||[]),timer:null};
   let YT;
   try{YT=await ytApi()}catch(e){box.parentNode.outerHTML=`<div class="video vfail"><p>Плейърът не можа да се зареди. <a href="https://www.youtube.com/playlist?list=${encodeURIComponent(C.playlist)}" target="_blank" rel="noopener">Гледайте курса в YouTube ↗</a></p></div>`;return}
   if(!$('#ytp'))return;
@@ -998,13 +1036,16 @@ async function initCourse(C){
 function waitList(n){
   if(!CP||!CP.player||!$('#clist'))return;
   const ids=CP.player.getPlaylist&&CP.player.getPlaylist();
-  if(ids&&ids.length){CP.ids=ids;drawList();return}
+  if(ids&&ids.length){const keep=ids.slice(0,CP.C.count);CP.ids=keep;
+    if(ids.length>keep.length){let pl=false;try{pl=CP.player.getPlayerState()===1}catch(e){}CP.player[pl?'loadPlaylist':'cuePlaylist'](keep,Math.min(CP.k,keep.length-1))}
+    drawList();return}
   if(n<40)setTimeout(()=>waitList(n+1),250);
 }
 function onState(e,YT){
   if(!CP||!$('#clist'))return;
   if(!CP.ids.length)waitList(0);
   const k=CP.player.getPlaylistIndex?CP.player.getPlaylistIndex():-1;
+  if(CP.ids.length&&k>=CP.ids.length){try{CP.player.stopVideo()}catch(x){}return}
   if(k>=0&&k!==CP.k){CP.k=k;const st=cget();st.last=k;cset(st);markCur()}
   if(e.data===YT.PlayerState.PLAYING){clearInterval(CP.timer);CP.timer=setInterval(()=>{try{const d=CP.player.getDuration(),t=CP.player.getCurrentTime();if(d>0&&t/d>.9)done(CP.k)}catch(x){}},4000);
     const vd=CP.player.getVideoData&&CP.player.getVideoData();if(vd&&vd.title&&CP.ids[CP.k]){const c=tget();if(!c[CP.ids[CP.k]]){c[CP.ids[CP.k]]=vd.title;try{localStorage.setItem(TCACHE,JSON.stringify(c))}catch(x){}const el=document.querySelector(`#clist [data-k="${CP.k}"] .lt`);if(el)el.textContent=vd.title}}}
@@ -1057,7 +1098,7 @@ async function route(){
   {const o=$('#hitnav'); if(o) o.remove();}
   const h=location.hash.slice(1)||'tarsene';
   const v=h.startsWith('pan-')?'paneuritmia':h.startsWith('bg-')?'balgaria':h.startsWith('tema-')?'temi':h.startsWith('b-')?'':h;
-  document.querySelectorAll('#nav a').forEach(a=>{const on=a.dataset.v===v;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});navInView();
+  document.querySelectorAll('#nav a').forEach(a=>{const on=a.dataset.v===v;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});setMenu(false);
   if(h==='tarsene'){renderSearch();if(S.theme&&!S.res&&$('#th'))$('#th').value=S.theme;return}
   if(h==='balgaria'){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();window.scrollTo(0,0);return}
   if(h.startsWith('bg-')){if(!BG)BG=await getJSON('bulgaria.json');renderBulgaria();const e=document.getElementById(h);if(e)e.scrollIntoView();return}
