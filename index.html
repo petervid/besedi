@@ -1051,27 +1051,30 @@ async function orderList(ids){
   const c=tget();const T=keep.map(id=>c[id]||'');
   const sorted=keep.map((id,k)=>({id,k,n:lnum(T[k])})).sort((x,y)=>x.n-y.n||x.k-y.k).map(x=>x.id).concat(tail);
   CP.ids=sorted;CP.k=Math.max(0,sorted.indexOf(CP.last));
+  /* from here on every lesson is played by its own video id, never by playlist position */
   let pl=false;try{pl=CP.player.getPlayerState()===1}catch(e){}
-  CP.player[pl?'loadPlaylist':'cuePlaylist'](sorted,CP.k);
+  CP.player[pl?'loadVideoById':'cueVideoById'](sorted[CP.k]);
   drawList();
 }
 function onState(e,YT){
   if(!CP||!$('#clist'))return;
   if(!CP.ids.length)return;
-  const k=CP.player.getPlaylistIndex?CP.player.getPlaylistIndex():-1;
-  if(CP.ids.length&&k>=CP.ids.length){try{CP.player.stopVideo()}catch(x){}return}
-  if(k>=0&&k!==CP.k){CP.k=k;saveLast();markCur()}
+  let vid='';try{vid=(CP.player.getVideoData()||{}).video_id||''}catch(x){}
+  const k=vid?CP.ids.indexOf(vid):CP.k;
+  if(vid&&k<0){if(e.data===YT.PlayerState.PLAYING||e.data===YT.PlayerState.BUFFERING){try{CP.player.cueVideoById(CP.ids[CP.k])}catch(x){}}return}
+  if(k!==CP.k){CP.k=k;saveLast();markCur()}
   if(e.data===YT.PlayerState.PLAYING){clearInterval(CP.timer);CP.timer=setInterval(()=>{try{const d=CP.player.getDuration(),t=CP.player.getCurrentTime();if(d>0&&t/d>.9)done(CP.k)}catch(x){}},4000);
     const vd=CP.player.getVideoData&&CP.player.getVideoData();if(vd&&vd.title&&CP.ids[CP.k]){const c=tget();if(!c[CP.ids[CP.k]]){c[CP.ids[CP.k]]=vd.title;try{localStorage.setItem(TCACHE,JSON.stringify(c))}catch(x){}const el=document.querySelector(`#clist [data-k="${CP.k}"] .lt`);if(el)el.textContent=vd.title}}}
   else clearInterval(CP.timer);
-  if(e.data===YT.PlayerState.ENDED)done(CP.k);
+  if(e.data===YT.PlayerState.ENDED){done(CP.k);if(CP.k<CP.ids.length-1)playAt(CP.k+1)}
 }
+function playAt(k){CP.k=k;saveLast();CP.player.loadVideoById(CP.ids[k]);markCur()}
 function saveLast(){const st=cget();st.last=CP.ids[CP.k]||'';cset(st)}
 function done(k){const id=CP&&CP.ids[k];if(!id||CP.watched.has(id))return;CP.watched.add(id);const st=cget();st.done=[...CP.watched];cset(st);markCur()}
 function drawList(){
   const ul=$('#clist');if(!ul)return;const t=tget();
   ul.innerHTML=CP.ids.map((id,k)=>`<li><button type="button" data-k="${k}"><img src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt="" loading="lazy" width="96" height="54"><span class="lb"><span class="ln">Урок ${k+1}</span><span class="lt">${esc(t[id]||'')}</span></span><span class="ck" aria-hidden="true"></span></button></li>`).join('');
-  ul.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;CP.k=k;saveLast();CP.player.playVideoAt(k);markCur()});
+  ul.querySelectorAll('button').forEach(b=>b.onclick=()=>playAt(+b.dataset.k));
   $('#ccount').textContent=CP.ids.length;{const v=$('#cvid');if(v)v.textContent=CP.ids.length}
   markCur(true);
   CP.ids.forEach(async(id,k)=>{if(t[id])return;const ti=await vtitle(id);const el=document.querySelector(`#clist [data-k="${k}"] .lt`);if(el&&ti)el.textContent=ti});
@@ -1084,7 +1087,7 @@ function markCur(scroll){
   const dn=$('#cdone');if(dn)dn.textContent=n?`Изгледани: ${CP.ids.filter(id=>CP.watched.has(id)).length} от ${n}`:'';
   const cur=ul.querySelector('button.on');if(cur&&(scroll||true)){const top=cur.offsetTop-ul.offsetTop;if(top<ul.scrollTop||top>ul.scrollTop+ul.clientHeight-cur.offsetHeight)ul.scrollTo({top:top-8,behavior:scroll?'auto':'smooth'})}
 }
-function stepCourse(d){if(!CP||!CP.ids.length)return;const k=Math.max(0,Math.min(CP.ids.length-1,CP.k+d));if(k===CP.k)return;CP.k=k;saveLast();CP.player.playVideoAt(k);markCur()}
+function stepCourse(d){if(!CP||!CP.ids.length)return;const k=Math.max(0,Math.min(CP.ids.length-1,CP.k+d));if(k===CP.k)return;playAt(k)}
 
 let PAN=null;
 async function renderPan(){
