@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Manrope:wght@600;700&display=block">
+<style>
+html,body{margin:0}
+#c{position:relative;width:1200px;height:630px;background:url(ogbg_tpl.png) 0 0/1200px 630px;overflow:hidden;font-family:Manrope,sans-serif;color:#1d2f4a}
+#t{position:absolute;left:70px;top:0;bottom:0;width:700px;display:flex;flex-direction:column;justify-content:center}
+.eb{margin:0 0 14px;font-weight:700;font-size:19px;letter-spacing:.14em;text-transform:uppercase;color:#b07f22;display:flex;align-items:center;gap:12px}
+.eb:before{content:"";width:32px;height:1.5px;background:#d2a64a}
+h1{margin:0;font-family:"Cormorant Garamond",serif;font-weight:600;line-height:1.04;font-size:76px;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.rt{margin:22px 0 0;font-size:26px;font-weight:600;color:#3b5576}
+.u{position:absolute;left:70px;bottom:34px;margin:0;font-weight:600;font-size:19px;color:#596b82;letter-spacing:.02em}
+</style>
+<div id="c"><div id="t"><p class="eb" id="eb"></p><h1 id="h"></h1><p class="rt" id="rt"></p></div><p class="u">petervid.github.io/besedi · Беседите на Учителя</p></div>
+<script>
+function fill(eb,title,rt){document.getElementById('eb').textContent=eb;const h=document.getElementById('h');h.textContent=title;
+ let fs=title.length>90?50:title.length>60?58:title.length>34?66:78;h.style.fontSize=fs+'px';
+ while(h.scrollHeight>h.clientHeight+2&&fs>40){fs-=4;h.style.fontSize=fs+'px'}
+ document.getElementById('rt').textContent=rt}
+</script>

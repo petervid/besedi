@@ -437,6 +437,7 @@ async function getJSON(path){
 const shardOf=i=>getJSON('t/'+String(Math.floor(i/MAP.shard)).padStart(3,'0')+'.json');
 async function docText(i){const s=await shardOf(i);return s[i%MAP.shard]}
 const TH=()=>Object.fromEntries(THEMES.map(t=>[t.id,t]));
+function readTime(w){const m=Math.max(1,Math.round(w/200));return m<60?`≈ ${m} мин четене`:`≈ ${Math.floor(m/60)} ч ${m%60?m%60+' мин ':''}четене`}
 function fmtDate(d){const m=d.match(/^(\d{4})-(\d\d)-(\d\d)$/);if(!m)return d;return `${+m[3]}.${m[2]}.${m[1]}`}
 function chips(ids){if(!THEMES||!ids.length)return '';const th=TH();return '<div class="chips">'+ids.map(id=>`<a class="chip" href="#tema-${id}">${esc(th[id].name)}</a>`).join('')+'</div>'}
 
@@ -624,7 +625,7 @@ async function renderReader(num,para){
   const i=byNum.get(num); if(i==null){app.innerHTML='<p>Няма такава беседа.</p>';return}
   const m=META[i];
   app.innerHTML=`<article class="reader"><div class="head"><p class="eyebrow num">Беседа ${m[0]} от 3877</p><h1>${esc(m[2])}</h1>
-  <div class="info"><span>${esc(fmtDate(m[1]))}</span>${m[5]?`<span>${esc(m[5])}</span>`:''}${m[6]?`<span>${esc(m[6])}</span>`:''}<span class="num">${m[4].toLocaleString('bg')} думи</span><a href="https://beinsa.org/beseda/${esc(m[3])}" target="_blank" rel="noopener">Оригинал на beinsa.org ↗</a></div>${chips(m[7])}<div class="orn">✦</div></div>
+  <div class="info"><span>${esc(fmtDate(m[1]))}</span>${m[5]?`<span>${esc(m[5])}</span>`:''}${m[6]?`<span>${esc(m[6])}</span>`:''}<span class="num">${m[4].toLocaleString('bg')} думи</span><span class="num">${readTime(m[4])}</span><a href="https://beinsa.org/beseda/${esc(m[3])}" target="_blank" rel="noopener">Оригинал на beinsa.org ↗</a></div>${chips(m[7])}<div class="orn">✦</div></div>
   <div class="text" id="tx"><p class="loading">Зареждане на текста…</p></div>
   <div class="rnav">${i>0?`<a href="#b-${META[i-1][0]}">← ${esc(META[i-1][2])}</a>`:'<span></span>'}${i<META.length-1?`<a href="#b-${META[i+1][0]}" style="text-align:right">${esc(META[i+1][2])} →</a>`:''}</div></article>`;
   window.scrollTo(0,0);

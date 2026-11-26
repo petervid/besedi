@@ -55,14 +55,19 @@ FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="s
 LOGO = '<svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#d2a64a" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="#2b6a9e" stroke-width="1.6" stroke-linejoin="round"/></svg>'
 FOOT = '<footer><div class="v">Любов · Мъдрост · Истина · Правда · Добродетел</div>3877 беседи на Петър Дънов (Беинса Дуно), 1895–1944. Текстовете са взети от <a href="https://beinsa.org">beinsa.org</a>.<br><a href="../">Портал с търсене</a> · <a href="./">Всички беседи</a></footer>'
 
-def head(title, desc, canon, extra=''):
+def head(title, desc, canon, extra='', img=None):
+    img = img or f'{BASE}og.jpg?v=2'
     return f'''<!doctype html>
 <html lang="bg"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{canon}">
 <meta property="og:type" content="article"><meta property="og:site_name" content="Беседите на Учителя"><meta property="og:title" content="{esc(title)}">
-<meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{BASE}og.jpg?v=2"><meta property="og:locale" content="bg_BG"><meta property="og:image:alt" content="Беседите на Учителя"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/jpeg"><meta property="og:locale" content="bg_BG"><meta property="og:image:alt" content="Беседите на Учителя"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><meta name="theme-color" content="#f2f6fb">
 {FONTS}<style>{CSS}</style>{extra}</head><body>'''
+
+def readtime(w):
+    m = max(1, round(w / 200))
+    return f'≈ {m} мин четене' if m < 60 else f'≈ {m // 60} ч {str(m % 60) + " мин " if m % 60 else ""}четене'
 
 def describe(text):
     for p in re.split(r'\n\s*\n', text):
@@ -91,11 +96,11 @@ for i, m in enumerate(META):
     ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": title[:110], "datePublished": date,
                      "author": {"@type": "Person", "name": "Петър Дънов (Беинса Дуно)"}, "inLanguage": "bg",
                      "isPartOf": {"@type": "WebSite", "name": "Беседите на Учителя", "url": BASE}, "url": BASE + 'b/' + url(i)}, ensure_ascii=False)
-    info = ''.join(f'<span>{esc(x)}</span>' for x in [fmt(date), place, verse, f'{words:,} думи'.replace(',', ' ')] if x)
+    info = ''.join(f'<span>{esc(x)}</span>' for x in [fmt(date), place, verse, f'{words:,} думи'.replace(',', ' '), readtime(words)] if x)
     chips = ''.join(f'<a href="../#tema-{t_}">{esc(THEMES[t_])}</a>' for t_ in th if t_ in THEMES)
     prev = f'<a href="{url(i-1)}">← {esc(META[i-1][2])}</a>' if i > 0 else '<span></span>'
     nxt = f'<a href="{url(i+1)}" style="text-align:right">{esc(META[i+1][2])} →</a>' if i < N - 1 else ''
-    page = head(full, desc, BASE + 'b/' + url(i), f'<script type="application/ld+json">{ld}</script>') + f'''
+    page = head(full, desc, BASE + 'b/' + url(i), f'<script type="application/ld+json">{ld}</script>', f'{BASE}og/b/{SLUG[i]}.jpg?v=1') + f'''
 <div class="top"><div class="wrap"><a class="brand" href="../">{LOGO}Беседите на Учителя</a><a class="cta" href="../#b-{num}">Отвори в портала с търсене →</a></div></div>
 <main class="wrap"><p class="crumbs"><a href="../">Начало</a> › <a href="./#y{date[:4]}">{date[:4]}</a> › {esc(title)}</p>
 <article><header class="h"><p class="eb">Беседа {num} от {N} · Беинса Дуно</p><h1>{esc(title)}</h1>
