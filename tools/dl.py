@@ -4,7 +4,7 @@ os.makedirs(OUT, exist_ok=True)
 UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
 lines=[l.rstrip('\n').split('\t') for l in open('/mnt/project-files/besedi/spisak_url.txt',encoding='utf-8')][:int(sys.argv[1])]
 def clean(s):
-    s=re.sub(r'<br\s*/?>','\n',s); s=re.sub(r'</p>','\n\n',s); s=re.sub(r'<[^>]+>','',s)
+    s=re.sub(r'<br\s*/?>','\n',s); s=re.sub(r'</p>','\n\n',s); s=re.sub(r'</?[A-Za-z][^>]*>','',s)
     s=html.unescape(s).replace('\r','').replace('\xa0',' '); s=re.sub(r'[ \t]+\n','\n',s); s=re.sub(r'\n{3,}','\n\n',s); return s.strip()
 def fetch(url):
     for a in range(6):

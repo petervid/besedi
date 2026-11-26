@@ -43,6 +43,7 @@ h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:clam
 .orn{color:var(--gold);margin-top:16px}
 .text{font-family:Literata,Georgia,serif;font-size:19px;line-height:1.78;hyphens:auto;text-wrap:pretty}
 .text p{margin:0 0 1.05em}
+.fig{display:block;margin:.6em 0 1em;text-align:center}.fig img{max-width:100%;height:auto;background:#fff;border-radius:6px;padding:6px}
 nav.rn{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);margin-top:28px;padding-top:14px;flex-wrap:wrap}
 nav.rn a{text-decoration:none;max-width:48%}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:30px 16px 40px}
@@ -86,11 +87,21 @@ def text(i):
         shard_cache.clear(); shard_cache[k] = json.load(open(f't/{k:03d}.json', encoding='utf-8'))
     return shard_cache[k][i % SHARD]
 
+# formatting and drawings from the original (tools/rich.py): same paragraphs, with markers
+RICH = {}
+for f in sorted(os.listdir('r')) if os.path.isdir('r') else []:
+    if re.match(r'\d{3}\.json$', f): RICH.update({int(k): v for k, v in json.load(open('r/' + f, encoding='utf-8')).items()})
+def rich_html(p):
+    h = esc(p.strip())
+    h = re.sub('\ue010([^\ue011]*)\ue011', lambda m: f'<span class="fig"><img src="../{m[1]}" alt="Рисунка от беседата" loading="lazy" onerror="this.parentNode.remove()"></span>', h)
+    for a, b in (('\ue000', '<em>'), ('\ue001', '</em>'), ('\ue002', '<sup>'), ('\ue003', '</sup>'), ('\ue004', '<strong>'), ('\ue005', '</strong>')): h = h.replace(a, b)
+    return h.replace(chr(10), '<br>')
+
 N = len(META)
 for i, m in enumerate(META):
     num, date, title, src, words, place, verse, th = m
     t = text(i)
-    paras = ''.join(f'<p>{esc(p.strip()).replace(chr(10), "<br>")}</p>' for p in re.split(r'\n\s*\n', t) if p.strip())
+    paras = ''.join(f'<p>{rich_html(p)}</p>' for p in re.split(r'\n\s*\n', RICH.get(i, t)) if p.strip())
     desc = describe(t)
     full = f'{title} · беседа от Учителя Петър Дънов, {fmt(date)}'
     ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": title[:110], "datePublished": date,

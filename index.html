@@ -343,6 +343,7 @@ header.top .wrap{flex-wrap:nowrap}
 .menu a{display:block;text-decoration:none;color:var(--ink);padding:9px 12px;border-radius:12px}
 .menu a b{display:block;font-size:15.5px;font-weight:700}
 .menu a small{display:block;margin-top:2px;font-size:13px;color:var(--muted);line-height:1.35}
+.fig{display:block;margin:.6em 0 1em;text-align:center}.fig img{max-width:100%;height:auto;background:#fff;border-radius:8px;padding:8px;box-shadow:0 2px 12px color-mix(in srgb,var(--deep) 12%,transparent)}
 .rshare{display:flex;justify-content:center;margin:14px 0 4px}.rshare .btn{padding:8px 18px;font-size:14px}
 .mshare{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:none;border:0;padding:9px 12px;border-radius:12px;cursor:pointer;margin-top:6px}.mshare b{display:block;font-size:15.5px;font-weight:700}.mshare small{display:block;margin-top:2px;font-size:13px;color:var(--muted)}.mshare:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
 .menu a:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
@@ -437,6 +438,10 @@ async function getJSON(path){
 }
 const shardOf=i=>getJSON('t/'+String(Math.floor(i/MAP.shard)).padStart(3,'0')+'.json');
 async function docText(i){const s=await shardOf(i);return s[i%MAP.shard]}
+/* formatting and drawings from the original: same paragraphs as the plain text, with private-use markers */
+let RIDX=null;
+async function richText(i){try{if(!RIDX)RIDX=new Set(await getJSON('r/index.json'));if(!RIDX.has(i))return null;const d=await getJSON('r/'+String(Math.floor(i/MAP.shard)).padStart(3,'0')+'.json');return d[i]||null}catch(e){return null}}
+function richHTML(h){return h.replace(/\uE010([^\uE011]*)\uE011/g,(_,src)=>`<span class="fig"><img src="${src}" alt="Рисунка от беседата" loading="lazy" onerror="this.parentNode.remove()"></span>`).replace(/\uE000/g,'<em>').replace(/\uE001/g,'</em>').replace(/\uE002/g,'<sup>').replace(/\uE003/g,'</sup>').replace(/\uE004/g,'<strong>').replace(/\uE005/g,'</strong>')}
 const TH=()=>Object.fromEntries(THEMES.map(t=>[t.id,t]));
 function readTime(w){const m=Math.max(1,Math.round(w/200));return m<60?`≈ ${m} мин четене`:`≈ ${Math.floor(m/60)} ч ${m%60?m%60+' мин ':''}четене`}
 function fmtDate(d){const m=d.match(/^(\d{4})-(\d\d)-(\d\d)$/);if(!m)return d;return `${+m[3]}.${m[2]}.${m[1]}`}
@@ -632,8 +637,9 @@ async function renderReader(num,para){
   window.scrollTo(0,0);
   try{const t=await docText(i);const useHl=S.rx&&S.res&&S.res.includes(i);
     const paras=t.split(/\n\s*\n/); let hitP=(para!=null&&para<paras.length)?para:-1;
-    const dc=paras.findIndex(p=>/^[„"«]?[А-ЯA-Zа-я]/.test(p.trim())&&p.length>120);
-    $('#tx').innerHTML=paras.map((p,k)=>`<p class="${k===hitP?'hit':''}${k===dc?' dc':''}"${k===hitP?' id="hit"':''}>${(useHl?hl(esc(p)):esc(p)).replace(/\n/g,'<br>')}</p>`).join('');
+    const rt=await richText(i);let rp=rt?rt.split(/\n\s*\n/):null;if(rp&&rp.length!==paras.length)rp=null;
+    let dc=paras.findIndex(p=>/^[„"«]?[А-ЯA-Zа-я]/.test(p.trim())&&p.length>120);if(rp&&dc>=0&&/^\s*[\uE000-\uE011]/.test(rp[dc]))dc=-1;
+    $('#tx').innerHTML=paras.map((p,k)=>{const src=rp?rp[k]:p;let h=useHl?hl(esc(src)):esc(src);if(rp)h=richHTML(h);return `<p class="${k===hitP?'hit':''}${k===dc?' dc':''}"${k===hitP?' id="hit"':''}>${h.replace(/\n/g,'<br>')}</p>`}).join('');
     setupHits(hitP);
   }catch(e){$('#tx').innerHTML='<p>Текстът не можа да се зареди. Опитайте отново.</p>'}
 }
