@@ -32,7 +32,7 @@ def page(path, name, title, desc, target, body=''):
     depth = path.count('/')
     up = '../' * depth
     url = BASE + re.sub(r'index\.html$', '', path)
-    img = f'{BASE}og/{name}.jpg?v=1'
+    img = f'{BASE}og/{name}.jpg?v=2'
     t = f'{title} · Беседите на Учителя'
     h = f'''<!doctype html>
 <html lang="bg"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +45,8 @@ def page(path, name, title, desc, target, body=''):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(desc)}"><meta name="twitter:image" content="{img}">
 <link rel="icon" href="{up}favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{up}apple-touch-icon.png">
 <style>{CSS}</style>
-<script>location.replace("{up}#{target}")</script>
+<script>/* people go straight to the app; link-preview robots (iMessage, Facebook, Viber, Google…) stay here and read the tags above */
+if(!/bot|crawl|spider|facebookexternalhit|facebot|preview|whatsapp|telegram|viber|slack|discord|linkedin|skype|embedly|google|bing|yandex|pinterest|redditbot|applebot|headless|lighthouse/i.test(navigator.userAgent))location.replace("{up}#{target}")</script>
 </head><body><main class="wrap"><p class="eb">Беседите на Учителя</p><h1>{esc(title)}</h1><p class="lede">{esc(desc)}</p>
 <a class="go" href="{up}#{target}">Отвори в сайта →</a>{body}</main></body></html>
 '''
