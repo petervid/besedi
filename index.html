@@ -382,6 +382,10 @@ main:focus{outline:none}
 .chead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;align-items:baseline;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}
 .chead #cdone{color:var(--muted);font-size:12.5px}
 .clist{list-style:none;margin:0;padding:6px;overflow-y:auto;max-height:440px;overscroll-behavior:contain}
+.clist li:not(.cload){display:flex;align-items:center;gap:2px}.clist li>button[data-k]{flex:1;min-width:0}
+.clist .csh{display:flex;align-items:center;justify-content:center;padding:0;flex:none;width:38px;height:38px;border-radius:50%;border:1px solid transparent;background:none;color:var(--muted);font-size:16px;font-weight:700;cursor:pointer}.clist .csh:hover{color:var(--ink);border-color:color-mix(in srgb,var(--gold) 50%,var(--line));background:var(--surface)}
+.cshr{display:flex;justify-content:center;margin-top:10px}.cshr .btn{min-height:40px;padding:8px 18px;font-size:14px}
+#pan-kurs .acts{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .clist .cload{padding:14px;color:var(--muted);font-size:14px}
 .clist button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:none;padding:6px;border-radius:10px;cursor:pointer;color:var(--ink)}
 .clist button:hover{background:color-mix(in srgb,var(--gold) 10%,transparent)}
@@ -983,8 +987,8 @@ async function shareLink(){
   const m=h.match(/^b-(\d+)/);if(m){const i=byNum.get(+m[1]);if(i!=null){try{if(!SLUGS)SLUGS=await getJSON('b/slugs.json');if(SLUGS[i])return LIVE+'b/'+SLUGS[i]+'.html'}catch(e){}}}
   return LIVE;
 }
-async function sharePage(){
-  const url=await shareLink(),title=document.title;
+async function sharePage(){return doShare(await shareLink(),document.title)}
+async function doShare(url,title){
   if(navigator.share){try{await navigator.share({title,url});return}catch(e){if(e&&e.name==='AbortError')return}}
   try{await navigator.clipboard.writeText(url);toast('Връзката е копирана ✓')}catch(e){prompt('Копирайте връзката:',url)}
 }
@@ -1097,20 +1101,21 @@ function onState(e,YT){
   else clearInterval(CP.timer);
   if(e.data===YT.PlayerState.ENDED){done(CP.k);if(CP.k<CP.ids.length-1)playAt(CP.k+1)}
 }
+function shareLesson(k){if(!CP||!CP.ids[k])return;const id=CP.ids[k],t=tget()[id]||`Урок ${k+1}`;doShare('https://youtu.be/'+id,`${t} · ${CP.C.title}`)}
 function playAt(k){CP.k=k;saveLast();CP.player.loadVideoById(CP.ids[k]);markCur()}
 function saveLast(){const st=cget();st.last=CP.ids[CP.k]||'';cset(st)}
 function done(k){const id=CP&&CP.ids[k];if(!id||CP.watched.has(id))return;CP.watched.add(id);const st=cget();st.done=[...CP.watched];cset(st);markCur()}
 function drawList(){
   const ul=$('#clist');if(!ul)return;const t=tget();
-  ul.innerHTML=CP.ids.map((id,k)=>`<li><button type="button" data-k="${k}"><img src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt="" loading="lazy" width="96" height="54"><span class="lb"><span class="ln">Урок ${k+1}</span><span class="lt">${esc(t[id]||'')}</span></span><span class="ck" aria-hidden="true"></span></button></li>`).join('');
-  ul.querySelectorAll('button').forEach(b=>b.onclick=()=>playAt(+b.dataset.k));
+  ul.innerHTML=CP.ids.map((id,k)=>`<li><button type="button" data-k="${k}"><img src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt="" loading="lazy" width="96" height="54"><span class="lb"><span class="ln">Урок ${k+1}</span><span class="lt">${esc(t[id]||'')}</span></span><span class="ck" aria-hidden="true"></span></button><button type="button" class="csh" data-sk="${k}" aria-label="Сподели урок ${k+1}" title="Сподели урока">↗</button></li>`).join('');
+  ul.querySelectorAll('button[data-k]').forEach(b=>b.onclick=()=>playAt(+b.dataset.k));ul.querySelectorAll('button[data-sk]').forEach(b=>b.onclick=()=>shareLesson(+b.dataset.sk));
   $('#ccount').textContent=CP.ids.length;{const v=$('#cvid');if(v)v.textContent=CP.ids.length}
   markCur(true);
   CP.ids.forEach(async(id,k)=>{if(t[id])return;const ti=await vtitle(id);const el=document.querySelector(`#clist [data-k="${k}"] .lt`);if(el&&ti)el.textContent=ti});
 }
 function markCur(scroll){
   const ul=$('#clist');if(!ul||!CP)return;
-  ul.querySelectorAll('button').forEach(b=>{const k=+b.dataset.k,on=k===CP.k;b.classList.toggle('on',on);b.classList.toggle('done',CP.watched.has(CP.ids[k]));if(on)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});
+  ul.querySelectorAll('button[data-k]').forEach(b=>{const k=+b.dataset.k,on=k===CP.k;b.classList.toggle('on',on);b.classList.toggle('done',CP.watched.has(CP.ids[k]));if(on)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});
   const n=CP.ids.length;$('#cpos').textContent=n?`Урок ${CP.k+1} от ${n}`:'';
   $('#cprev').disabled=!n||CP.k<=0;$('#cnext').disabled=!n||CP.k>=n-1;
   const dn=$('#cdone');if(dn)dn.textContent=n?`Изгледани: ${CP.ids.filter(id=>CP.watched.has(id)).length} от ${n}`:'';
@@ -1129,14 +1134,14 @@ async function renderPan(){
   <section class="bgsec" id="pan-kurs"><p class="eyebrow">${esc(C.sub)} · <span id="cvid">${C.count}</span> видеа</p><h2>${esc(C.title)}</h2>
    <p class="summary">Уроците вървят един след друг. Изберете урок от списъка или използвайте бутоните „Предишен“ и „Следващ“. Сайтът помни докъде сте стигнали и отбелязва изгледаните уроци.</p>
    <div class="course"><div class="cmain"><div class="video"><div id="ytp"></div></div>
-    <div class="cbar"><button class="btn ghost" type="button" id="cprev" disabled>← Предишен</button><span id="cpos" class="num"></span><button class="btn ghost" type="button" id="cnext" disabled>Следващ →</button></div></div>
+    <div class="cbar"><button class="btn ghost" type="button" id="cprev" disabled>← Предишен</button><span id="cpos" class="num"></span><button class="btn ghost" type="button" id="cnext" disabled>Следващ →</button></div><div class="cshr"><button class="btn ghost" type="button" id="cshl">↗ Сподели този урок</button></div></div>
     <aside class="cside" aria-label="Уроци"><div class="chead"><b>Всички уроци (<span id="ccount">${C.count}</span>)</b><span id="cdone"></span></div><ol id="clist" class="clist"><li class="cload">Зареждане на списъка…</li></ol></aside></div>
-   <div class="acts"><a class="btn ghost" href="https://www.youtube.com/playlist?list=${encodeURIComponent(C.playlist)}" target="_blank" rel="noopener">Целият плейлист в YouTube ↗</a></div>
+   <div class="acts"><a class="btn ghost" href="https://www.youtube.com/playlist?list=${encodeURIComponent(C.playlist)}" target="_blank" rel="noopener">Целият плейлист в YouTube ↗</a><button class="btn ghost" type="button" id="cshp">↗ Сподели плейлиста</button></div>
    <p class="note">Видео курс: ${esc(C.author)}.</p></section>
   ${PAN.parts.map((x,k)=>`<section class="bgsec" id="pan-${x.id}"><p class="eyebrow num">Част ${k+1} от ${PAN.parts.length}</p><h2>${esc(x.name)}</h2><p class="summary"><span>Обобщение</span>${esc(x.intro)}</p>${x.items.map(([i,p,t])=>q(i,p,t)).join('')}</section>`).join('')}
   <section class="bgsec"><h2>Бележките от 1939 година</h2><p class="summary">Думата „Паневритмия“ се среща в беседите само в бележки от пролетта и лятото на 1939 г., когато упражненията се играят преди беседите. Самите упражнения и обясненията към тях са в отделната книга „Паневритмия“.</p>
    <ul class="list">${PAN.notes.map(([i,p,t])=>`<li><span class="d">${esc(fmtDate(META[i][1]))}</span><a href="#b-${META[i][0]}-p${p}">${esc(META[i][2])}</a> <span class="d">· ${esc(t)}</span></li>`).join('')}</ul></section>`;
-  $('#cprev').onclick=()=>stepCourse(-1);$('#cnext').onclick=()=>stepCourse(1);
+  $('#cshl').onclick=()=>shareLesson(CP?CP.k:0);$('#cshp').onclick=()=>doShare('https://www.youtube.com/playlist?list='+encodeURIComponent(C.playlist),C.title);$('#cprev').onclick=()=>stepCourse(-1);$('#cnext').onclick=()=>stepCourse(1);
   initCourse(C);
 }
 
