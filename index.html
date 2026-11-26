@@ -343,6 +343,7 @@ header.top .wrap{flex-wrap:nowrap}
 .menu a{display:block;text-decoration:none;color:var(--ink);padding:9px 12px;border-radius:12px}
 .menu a b{display:block;font-size:15.5px;font-weight:700}
 .menu a small{display:block;margin-top:2px;font-size:13px;color:var(--muted);line-height:1.35}
+.mshare{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:none;border:0;padding:9px 12px;border-radius:12px;cursor:pointer;margin-top:6px}.mshare b{display:block;font-size:15.5px;font-weight:700}.mshare small{display:block;margin-top:2px;font-size:13px;color:var(--muted)}.mshare:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
 .menu a:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
 .menu a.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--gold)}
 .menuveil{position:fixed;inset:0;z-index:14;background:color-mix(in srgb,var(--ink) 28%,transparent);animation:menuin .2s ease-out}
@@ -350,6 +351,8 @@ header.top .wrap{flex-wrap:nowrap}
 body.menu-open{overflow:hidden}
 @media (max-width:900px){.mgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.mgrid{grid-template-columns:1fr;gap:14px;padding-block:12px 20px}.menubtn .ml{display:none}.menubtn{padding:10px 12px}.backbtn{padding:6px 11px}}
+.brand,.backbtn{white-space:nowrap}.brand{min-width:0}
+@media (max-width:430px){.brand{font-size:18.5px;gap:7px}.brand svg{width:26px;height:26px}.backbtn .bt{display:none}.backbtn{padding:6px 13px;font-size:16px}}
 @media (prefers-reduced-motion:reduce){.menu,.menuveil{animation:none}.menubtn .bars i{transition:none}}
 
 /* ---------- UX polish ---------- */
@@ -398,10 +401,10 @@ main:focus{outline:none}
 <a class="skip" href="#app">Към съдържанието</a>
 <header class="top"><div class="wrap">
   <a class="brand" href="#tarsene"><svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--gold)" stroke-width="1.6"/><polygon points="20,4.5 29.1,32.5 5.3,15.2 34.7,15.2 10.9,32.5" fill="none" stroke="var(--deep)" stroke-width="1.6" stroke-linejoin="round"/></svg>Беседите на Учителя</a>
-  <button id="back" class="backbtn" type="button" hidden aria-label="Назад">← Назад</button>
+  <button id="back" class="backbtn" type="button" hidden aria-label="Назад">←<span class="bt"> Назад</span></button>
   <button id="menubtn" class="menubtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Отвори менюто"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="ml">Меню</span><span class="cnt" id="fcnt2" hidden></span></button>
 </div>
-<nav id="nav" class="menu" aria-label="Главно меню" hidden><div class="mgrid"><div class="mgroup"><p class="mh">Четене и търсене</p><a href="#tarsene" data-v="tarsene"><b>Търсене</b><small>Дума или израз във всички беседи</small></a><a href="#hronologia" data-v="hronologia"><b>Хронология</b><small>Беседите по години и серии</small></a><a href="#stihove" data-v="stihove"><b>Библейски стихове</b><small>Стиховете, които Учителя тълкува</small></a></div><div class="mgroup"><p class="mh">Учението</p><a href="#temi" data-v="temi"><b>Теми</b><small>Подбрани откъси по теми</small></a><a href="#balgaria" data-v="balgaria"><b>България</b><small>България и българите в новото време</small></a><a href="#paneuritmia" data-v="paneuritmia"><b>Паневритмия</b><small>Видео курс, смисъл и упражнения</small></a></div><div class="mgroup"><p class="mh">Изследване</p><a href="#slovo" data-v="slovo"><b>Словото</b><small>Как се променя словото през годините</small></a></div><div class="mgroup"><p class="mh">Лично</p><a href="#otkasi" data-v="otkasi"><b>♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></b><small>Запазените от вас откъси</small></a></div></div></nav>
+<nav id="nav" class="menu" aria-label="Главно меню" hidden><div class="mgrid"><div class="mgroup"><p class="mh">Четене и търсене</p><a href="#tarsene" data-v="tarsene"><b>Търсене</b><small>Дума или израз във всички беседи</small></a><a href="#hronologia" data-v="hronologia"><b>Хронология</b><small>Беседите по години и серии</small></a><a href="#stihove" data-v="stihove"><b>Библейски стихове</b><small>Стиховете, които Учителя тълкува</small></a></div><div class="mgroup"><p class="mh">Учението</p><a href="#temi" data-v="temi"><b>Теми</b><small>Подбрани откъси по теми</small></a><a href="#balgaria" data-v="balgaria"><b>България</b><small>България и българите в новото време</small></a><a href="#paneuritmia" data-v="paneuritmia"><b>Паневритмия</b><small>Видео курс, смисъл и упражнения</small></a></div><div class="mgroup"><p class="mh">Изследване</p><a href="#slovo" data-v="slovo"><b>Словото</b><small>Как се променя словото през годините</small></a></div><div class="mgroup"><p class="mh">Лично</p><a href="#otkasi" data-v="otkasi"><b>♡ Моите откъси<span class="cnt" id="fcnt" hidden></span></b><small>Запазените от вас откъси</small></a><button type="button" class="mshare" id="mshare"><b>↗ Сподели тази страница</b><small>Връзка със снимка и описание</small></button></div></div></nav>
 </header>
 <div class="menuveil" id="menuveil" hidden></div><div id="prog" aria-hidden="true"></div><div id="dawn" aria-hidden="true"></div>
 <div id="selbar" hidden><button type="button" id="sbsave">♡ Запази откъса</button><button type="button" id="sbshare">Сподели като картинка</button></div><div id="toast" hidden role="status"></div><div id="vtip" hidden></div><div class="modal" id="shr" hidden><div class="box"><img id="shimg" alt="Откъсът като картинка"><div class="acts"><button class="btn ghost" id="shgo" type="button">Сподели</button><a class="btn ghost" id="shdl" download="beseda-otkas.png">Изтегли</a><button class="btn ghost" id="shx" type="button">Затвори</button></div></div></div>
@@ -581,7 +584,7 @@ function renderTheme(id){
   const docs=[...t.docs].sort((a,b)=>a-b);
   app.innerHTML=pagehead(`<p class="eyebrow"><a href="#temi">Теми</a> · ${t.count} беседи</p><h1>${esc(t.name)}</h1><p class="lede">${esc(t.desc)}</p>`)+`
   ${spark(t.years,'bigspark',true)}
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px"><button class="btn ghost" id="ts">Търси в тази тема</button></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px"><button class="btn ghost" id="ts">Търси в тази тема</button><button class="btn ghost" type="button" data-share>↗ Сподели темата</button></div>
   <h2 style="margin-top:22px">Най-характерни откъси</h2>
   <div>${t.top.map(([i,q])=>{const m=META[i];return `<div class="quote" data-i="${i}">${q.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join('')}<div class="src"><a href="#b-${m[0]}">${esc(m[2])}</a> · ${esc(fmtDate(m[1]))}</div><div class="qa"><button type="button" data-act="fav">♡ Запази</button><button type="button" data-act="share">Сподели</button></div></div>`}).join('')}</div>
   <details><summary>Всички ${t.count} беседи в темата, по дата</summary><ul class="list">${docs.map(i=>`<li><span class="d">${esc(META[i][1])}</span><a href="#b-${META[i][0]}">${esc(META[i][2])}</a></li>`).join('')}</ul></details>`;
@@ -961,6 +964,24 @@ async function renderSlovo(){
 /* keep the page below the fixed top bar, and keep the active menu item in view */
 {const hd=document.querySelector('header.top');const fit=()=>document.documentElement.style.setProperty('--hh',hd.offsetHeight+'px');fit();
  if('ResizeObserver' in window)new ResizeObserver(fit).observe(hd);else addEventListener('resize',fit);}
+/* sharing: every section and theme has its own page with a matching preview picture */
+const LIVE='https://petervid.github.io/besedi/';let SLUGS=null;
+async function shareLink(){
+  const h=location.hash.slice(1)||'tarsene';
+  if(h.startsWith('tema-'))return LIVE+'tema/'+h.slice(5);
+  if(h.startsWith('pan-'))return LIVE+'paneuritmia/';
+  if(h.startsWith('bg-'))return LIVE+'balgaria/';
+  if(['temi','balgaria','paneuritmia','slovo','hronologia','stihove'].includes(h))return LIVE+h+'/';
+  const m=h.match(/^b-(\d+)/);if(m){const i=byNum.get(+m[1]);if(i!=null){try{if(!SLUGS)SLUGS=await getJSON('b/slugs.json');if(SLUGS[i])return LIVE+'b/'+SLUGS[i]+'.html'}catch(e){}}}
+  return LIVE;
+}
+async function sharePage(){
+  const url=await shareLink(),title=document.title;
+  if(navigator.share){try{await navigator.share({title,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(url);toast('Връзката е копирана ✓')}catch(e){prompt('Копирайте връзката:',url)}
+}
+$('#mshare').onclick=()=>{setMenu(false);sharePage()};
+document.addEventListener('click',e=>{if(e.target.closest('[data-share]'))sharePage()});
 /* hamburger menu: grouped sections, closes on Esc, outside click and navigation */
 function menuOpen(){return $('#menubtn').getAttribute('aria-expanded')==='true'}
 function setMenu(open,focusBtn){const b=$('#menubtn'),n=$('#nav');if(open===menuOpen())return;
